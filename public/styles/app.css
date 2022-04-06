@@ -1,0 +1,32 @@
+.hidden {
+	display: none;
+}
+
+.loading-container {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background-color: rgba(0,0,0, 0.7);
+}
+
+.loading {
+	z-index: 9999;
+	background-color: rgba(255,255,255, 1.0);
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	padding: 2.5rem 3.5rem;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	border-radius: 1rem;
+	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+#select_quentity_gram,#select_quentity_kg::-webkit-outer-spin-button,
+#select_quentity_gram,#select_quentity_kg::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

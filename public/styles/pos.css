@@ -1,0 +1,199 @@
+.bg-color{
+	background-color: #CBC6D2;
+}
+.nav-color{
+	background: #3E065F;
+  padding: .1rem 1rem;
+}
+.btn-color{
+	background-color: #238AA9;
+	color: #ffffff;
+}
+.btn-color2{
+	background-color: #000000;
+	color: #ffffff;
+}
+.table-head{
+	background: #000000;
+	color: #ffffff;
+}
+.table-product{
+	background-color: #ffffff;
+}
+.eye-button{
+	padding: 1.8%;
+	background-color: #3E065F;
+	color: #ffffff;
+	cursor: pointer;
+}
+.cancel,.order,.hold,.payment,.hold-sale{
+	width: 10.6rem;
+  padding: .5rem 1rem;
+	margin-left: .5%;
+	color: #ffffff;
+}
+.order2,.payment2,.hold-sale2{
+	padding: .3rem 4.8rem;
+	margin-left: .5%;
+	color: #ffffff;
+}
+.cancel{
+	background-color: #D9534F;
+}
+.order,.order2,.orders{
+	background-color: #238AA9;
+}
+.hold{
+	background-color: #6F5A8C;
+}
+.payment,.payment2,.payments{
+	background-color: #5CB85C;
+}
+.hold-sale,.hold-sale2,.hold-sales{
+	background-color: #3E065F;
+}
+.payments,.orders,.hold-sales{
+  width: 7rem;
+  color: #ffffff;
+}
+
+
+/*ovely side bar cod*/
+.overlay,.overlay2,.overlay3 {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  background-color: #ffffff;
+  overflow-x: hidden;
+  transition: 0.5s;
+}
+
+.overlay-content,.overlay-content2,.overlay-content3{
+  position: relative;
+  top: 1%;
+  width: 100%;
+  text-align: center;
+
+}
+
+.overlay a,.overlay2 a,.overlay3 a {
+  text-decoration: none;
+}
+
+
+.overlay .closebtn,.overlay2 .closebtn2 ,.overlay3 .closebtn3{
+  position: absolute;
+  right: 3%;
+  top: 2%;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+ padding: .1rem .7rem;
+}
+.overlay .closebtn:hover{
+	border: 1px solid #000000;
+	color: #ffffff ;
+}
+.overlay2 .closebtn2:hover{
+	border: 1px solid #000000;
+	color: #3E065F ;
+}
+.overlay3 .closebtn3:hover{
+  border: 1px solid #000000;
+  color: #3E065F ;
+}
+
+@media screen and (max-height: 450px) {
+  .overlay a,.overlay2 a,.overlay3 a{font-size: 20px}
+  .overlay .closebtn,.overlay2 .closebtn2,.overlay3 .closebtn3{
+  font-size: 40px;
+  top: 15px;
+  right: 35px;
+  }
+}
+
+
+.dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #3e8e41;
+}
+
+
+
+.bg-cut{
+  background-color: #3D065E;
+}
+
+#myInput,#myInput2,#myInput3 {
+  
+  background-image: url('/assets/defaults/searchicon.png');
+  background-position: 10px 8px;
+  background-repeat: no-repeat;
+  font-size: 16px;
+border: 1px solid #3E065F;
+}
+
+#myInput,#myInput2,#myInput3:focus {outline: 3px solid #ddd;}
+
+/*search */
+.dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #3e8e41;
+}
+
+#myInput,#myInput2,#myInput3 {
+  padding: .4rem 2rem;
+}
+
+
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: block;
+  position: absolute;
+  background-color: #f6f6f6;
+  min-width: 230px;
+  overflow: auto;
+  top: 100%;
+  border: 1px solid #ddd;
+  z-index: 1;
+  overflow-y: auto;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 8px 16px;
+  text-decoration: none;
+  display: block;
+
+}
+
+
+.dropdown-content a:hover {background-color: #3E065F; color: #ffffff;}
+#search_cut:hover{
+  cursor: pointer;
+
+}
+/*.show {display: block;}*/

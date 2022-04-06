@@ -1,0 +1,116 @@
+@media only screen and (min-width: 700px) {
+#myInput,#myInput3
+{
+  
+  width: 100%;
+  
+}
+  .sale-bar {
+    font-size: 1.5vw;
+  }
+   .sale-bar2 {
+    font-size: 1.6vw;
+  }
+  .btn-width{
+  	font-size: .6rem;
+  }
+  .wims{
+    font-size: 2vw;
+    margin-top: 7rem;
+  }
+ .product-font{
+ 	font-size: 1.3vw;
+ 
+  }
+  .remove, .add{
+  	padding: .1rem .4rem;
+  }
+  .table-new{
+  	height: 20rem;
+  }
+  .font{
+  	font-size: .6rem;
+  }
+  .font2{
+  	font-size: .6rem;
+  	padding: .3rem 2.8rem;
+  }
+  #myInput2
+{
+  
+  width: 23rem;
+  margin-left: 1%;
+}
+ .card-img{
+ 	height:3.5rem; 
+ 	width:3.5rem;
+ }
+ .d {
+ 	 width: 100%;
+ }
+ .btn-product{
+ 	font-size: .7rem;
+ }
+ .remov{
+ 	width:29rem
+ }
+
+}
+
+@media only screen and (min-width: 1000px) {
+  #myInput,#myInput3
+{
+  
+  width: 45.6rem;
+  
+}
+  .sale-bar {
+    font-size: 1.1vw;
+  }
+   .sale-bar2 {
+    font-size: 1.1vw;
+  }
+  .btn-width{
+  	font-size: .6rem;
+  }
+  .wims{
+    font-size: 1.5vw;
+    margin-top: 7rem;
+  }
+ .product-font{
+ 	font-size: 1.2vw;
+ 
+  }
+  .remove, .add{
+  	padding: .1rem .5rem;
+  }
+  .table-new{
+  	height: 24rem;
+  }
+   .font{
+  	font-size: 1rem;
+  }
+  .font2{
+  	font-size: 1rem;
+
+  }
+  #myInput2
+{
+  
+  width: 42.8rem;
+}
+.d {
+ 	 width: 100%;
+ }
+ .remov{
+ 	width:45rem
+ }
+}
+
+.sell_by,.type{
+	color: #3E065F;
+}
+.rm{
+	height: 2rem;
+
+}

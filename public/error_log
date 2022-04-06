@@ -1,0 +1,11 @@
+[11-Sep-2021 06:38:00 America/Boise] PHP Warning:  require(/home4/beqzeemy/public_html/wims/../vendor/autoload.php): failed to open stream: No such file or directory in /home4/beqzeemy/public_html/wims/index.php on line 34
+[11-Sep-2021 06:38:00 America/Boise] PHP Warning:  require(/home4/beqzeemy/public_html/wims/../vendor/autoload.php): failed to open stream: No such file or directory in /home4/beqzeemy/public_html/wims/index.php on line 34
+[11-Sep-2021 06:38:00 America/Boise] PHP Fatal error:  require(): Failed opening required '/home4/beqzeemy/public_html/wims/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home4/beqzeemy/public_html/wims/index.php on line 34
+[05-Oct-2021 04:33:32 America/Boise] PHP Warning:  require_once(/home4/beqzeemy/public_html/wims/../../laravelapps/wims/bootstrap/app.php): failed to open stream: No such file or directory in /home4/beqzeemy/public_html/wims/index.php on line 47
+[05-Oct-2021 04:33:32 America/Boise] PHP Fatal error:  require_once(): Failed opening required '/home4/beqzeemy/public_html/wims/../../laravelapps/wims/bootstrap/app.php' (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home4/beqzeemy/public_html/wims/index.php on line 47
+[26-Oct-2021 06:21:22 America/Boise] PHP Warning:  Maximum number of allowable file uploads has been exceeded in Unknown on line 0
+[26-Oct-2021 06:21:22 America/Boise] PHP Warning:  Maximum number of allowable file uploads has been exceeded in Unknown on line 0
+[26-Oct-2021 06:21:22 America/Boise] PHP Warning:  Maximum number of allowable file uploads has been exceeded in Unknown on line 0
+[27-Oct-2021 04:19:37 America/Boise] PHP Warning:  Maximum number of allowable file uploads has been exceeded in Unknown on line 0
+[27-Oct-2021 04:20:30 America/Boise] PHP Warning:  Maximum number of allowable file uploads has been exceeded in Unknown on line 0
+[27-Oct-2021 04:22:10 America/Boise] PHP Warning:  Maximum number of allowable file uploads has been exceeded in Unknown on line 0

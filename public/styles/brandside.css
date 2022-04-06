@@ -1,0 +1,55 @@
+/*.show-brand{
+	position: relative;
+  display: inline-block;
+}
+.drp{
+	display: none;
+	position: absolute;
+	background-color: #f1f1f1;
+    width: 10rem;
+  background:red;
+  z-index: 100;
+  right: 60%;
+  top: 60%;
+}
+
+*/
+
+/*.show-brand:hover .drp {display: block;}*/
+.input-top{
+    outline: none;
+    border: 1px solid #3E065F;
+    color: #000000;
+}
+.input-top:focus {
+    outline:none;
+}
+
+
+.cl{
+    height: .1rem !important;
+}
+.customer-tr{
+    margin-top: 1%;
+    font-style: none;
+    text-decoration: none;
+    color: #000000;
+}
+/*.customer-tr:not(:first-child):hover{
+    background-color: #3E065F;
+    color: #ffffff;
+   
+}*/
+.active{
+    background-color: #3E065F;
+    color: #ffffff;
+ 
+}
+
+.active3{
+    background-color: #5CB85C !important;
+    color: #ffffff;
+}
+.dropdown-item:focus, .dropdown-item:hover{
+    background-color: #5CB85C;
+}

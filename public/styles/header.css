@@ -1,0 +1,23 @@
+.nav{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1re 1rem;
+	background-color: #f6df83;
+	padding-left: 2%;
+	padding-right: 2%;
+}
+.ul{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-direction: row;
+	margin-bottom: 0;
+}
+.ul li{
+	padding: 1em 2em;
+	list-style: none;
+}
+.ul li .active{
+	background-color: red;
+}

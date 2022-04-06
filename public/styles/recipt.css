@@ -1,0 +1,146 @@
+
+.product_name
+{
+ 
+  outline: none;
+  border: none;
+  background: #ffffff;
+}
+.sell{
+  border: 1px solid #CED4DA;
+  width: 60%;
+  height: 2.3rem;
+  text-align: center;
+  border-radius: 5%;
+}
+.product_name
+{
+   width: 100%;
+}
+.sell_by
+{
+   width: 100%;
+}
+.info{
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+ border: 2px dotted black;
+}
+.heads,.number{
+  line-height: 10vw;
+  font-weight: 700;
+  width: 100%;
+  
+}
+.heads{
+  font-size:5vw;
+}
+.number{
+  font-size: 5vw !important;
+  display: flex;
+}
+
+.text{
+  font-size: 4vw;
+  padding: 0%;
+  color : #000000;
+  border-top: 2px dotted #000000;
+  border-bottom: 2px dotted #000000;
+}
+
+.printer *{
+    display: none;
+   
+  }
+@media print{
+  body *{
+    margin-top: 0%;
+    padding-top: 0%;
+    height: 0%;
+    display: none;
+  }
+  .printer *{
+    display: block;
+   flex-direction: column;
+   margin-top: 1%;
+  }
+  .table-font ,.footer-copy{
+    font-size: 4vw;
+    color: #000000;
+  }
+    .footer-p p{
+    font-size: 4vw;
+    color: #000000;
+  }
+  .footer{
+    margin-top: 5%;
+  }
+  
+  .footer-thank,.footer-total{
+    font-size: 5rem;
+    color: #000000;
+  }
+  .footer-print{
+    border: 1px dotted #000000;
+  }
+ 
+  
+}
+
+/*snack bar toast message*/ 
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #238AA9;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  right: 40%;
+  top: 30px;
+  font-size: 17px;
+}
+
+
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {top: 0; opacity: 0;} 
+  to {top: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {top: 0; opacity: 0;}
+  to {top: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {top: 30px; opacity: 1;} 
+  to {top: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {top: 30px; opacity: 1;}
+  to {top: 0; opacity: 0;}
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+
