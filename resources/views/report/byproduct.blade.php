@@ -13,27 +13,47 @@
 		</div>
 	</div>
 </div> -->
-<div class="row">
- <div class="col-md-4 col-12">
- 	<div class="form-group">
- 	<label for="">Start Date <span class="text-danger">*</span></label>
-     <input type="date" name="start_date" class="form-control" id="start_date_search" value="{{old('start_date')}}">
- </div>
- </div>
- <div class="col-12 col-md-4">
-   <div class="form-group">
-    <label for="">End Date <span class="text-danger">*</span>
-    </label>
-    <input type="date" name="end_date" class="form-control" id="end_date_search">
+<div class="card">
+  <div class="card-body">
+  	<div class="row">
+	<div class="col-12 col-md-4">
+       <h4 class="font-weight-bold mt-4">Product Reports</h4>
+       		
+	</div>
+</div>
+   <div class="row">
+	<div class="col-md-3 col-12">
+ 	  <div class="form-group">
+ 	   <label for="">Sort By Days<span class="text-danger">*</span></label>
+       <select class="form-control" name="reports" id="report_by_option">
+      	 <option selected disabled hidden>Sort By Days</option>
+      	 <option value="1">Daily</option>
+      	 <option value="2">15 Days</option>
+      	 <option value="3">Monthly</option>
+       </select>
+     </div>
+    </div>
+    <div class="col-md-3 col-12">
+ 	 <div class="form-group">
+ 	  <label for="">Start Date <span class="text-danger">*</span></label>
+      <input type="date" name="start_date" class="form-control" id="start_date_search" value="{{old('start_date')}}">
+     </div>
+    </div>
+    <div class="col-12 col-md-3">
+     <div class="form-group">
+      <label for="">End Date <span class="text-danger">*</span>
+      </label>
+      <input type="date" name="end_date" class="form-control" id="end_date_search">
+     </div>
+    </div>
+    <div class="col-md-3">
+  	 <div class="form-group">
+     <label for="" class="mt-3"> </label>
+     <button class="btn-info btn  btn-block search_by_date" >Search</button>
+    </div>
    </div>
   </div>
-  <div class="col-md-4">
-  	<div class="form-group">
-  <label for="" class="mt-3"> </label>
-   <button class="btn-info btn  btn-block search_by_date" >Search</button>
-   </div>
-  	
-  </div>
+ </div>
 </div>
 
 
@@ -113,6 +133,11 @@
 	<input type="hidden" name="databetween2" id="databetween2">
 	<input type="hidden" name="databetween" id="databetween">
 </form>
+
+<form id="report_form">
+	<input type="hidden" name="option_report" id="option_report">
+</form>
+
 @endsection
 @section('script')
 
@@ -143,5 +168,15 @@ $(document).ready(function() {
     } );
 });
 
+
+$('#report_by_option').change(function()
+ {
+
+   let value=$(this).val();
+    $('#option_report').val(value)
+    $('#report_form').submit();
+ });
+
 </script>
+
 @endsection

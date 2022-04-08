@@ -102,15 +102,6 @@ class ReportController extends Controller
         $sub_categories= $this->scategory();
         $brands= $this->brand();
       
-     
-       // $databetween='';
-       // $databetween2='';
-       // if($request->$databetween != null && $request->$databetween2 != null  )
-       // {
-       //  $databetween=$request->databetween;
-       //  $databetween2=$request->databetween2;
-       // }
-
   
         $query=Payment::select( 'orders.sell','orders.product_id','orders.product_name','payments.biller_name','products.pack_quentity', DB::raw(' SUM(orders.sub_total) AS sub_total, SUM(orders.tax) as tax, SUM(orders.quentity) as quentity') )
             ->join('orders', 'payments.id', '=', 'orders.payment_id')
@@ -122,6 +113,19 @@ class ReportController extends Controller
         {
            
             $query=$query->whereBetween('payments.updated_at',[$request->databetween,$request->databetween2]);
+        }
+          
+        if($request->option_report==1)
+        {
+          $query=$query->whereDate('payments.created_at','=', Carbon::today());
+        }
+        if($request->option_report==2)
+        {
+          $query=$query->where('payments.created_at','>=', Carbon::now()->subdays(15));
+        }
+        if($request->option_report==3)
+        {
+          $query=$query->whereMonth('payments.created_at','>=', Carbon::today()->month);
         }
 
            $orders=$query->paginate(10);

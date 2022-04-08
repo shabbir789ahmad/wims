@@ -24,7 +24,7 @@ font-weight: 700;
 <div class="row mt-2">
 	<div class="col-md-3 col-12">
  	<div class="form-group">
- 	<label for="">Start Date <span class="text-danger">*</span></label>
+ 	<label for="">Sort By Days <span class="text-danger">*</span></label>
       <select class="form-control" name="reports" id="report_by_option">
       	<option selected disabled hidden>Sort By Days</option>
       	<option value="1">Daily</option>

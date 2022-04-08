@@ -85,7 +85,7 @@ class ProductController extends Controller {
         $categories= $this->category();
         $sub_categories= $this->scategory();
         $brands= $this->brand();
-         $units = Unit::all();
+         $units = Unit::Branch()->get();
 
           //dd($products);
         return view('panel.products.new_product', compact('products','brands','categories','sub_categories','units'));
@@ -104,7 +104,7 @@ class ProductController extends Controller {
         $categories= $this->category();//from prodyuct trait
         $sub_categories= $this->scategory();//from prodyuct trait
         $brands= $this->brand();//from prodyuct trait
-        $units = Unit::all();
+        $units = Unit::Branch()->get();
       
         return view('panel.products.update_product', compact('products','brands','categories','sub_categories','units'));
      }
@@ -113,7 +113,7 @@ class ProductController extends Controller {
 
         $categories= $this->category();//from prodyuct trait
         $brands= $this->brand();//from prodyuct trait
-        $units = Unit::all();
+        $units = Unit::Branch()->get();
 
         return view('panel.products.create', compact('categories', 'brands', 'units'));
         
@@ -145,7 +145,7 @@ class ProductController extends Controller {
 
         }
 
-        $units = Unit::all();
+        $units = Unit::Branch()->get();
         $categories= $this->category();//from prodyuct trait
         $brands= $this->brand();//from prodyuct trait
         return view('panel.products.create_bulk', compact('categories', 'brands', 'units'))->with($meta);
@@ -487,7 +487,7 @@ class ProductController extends Controller {
         
      $product = Product::leftjoin('product_brands','products.id','=','product_brands.product_id')->select('products.category_id','products.sub_category_id','products.product_weight','products.product_name','products.product_code','products.unit_id','product_brands.brand_id','product_brands.id','product_brands.product_id','products.sell_by','products.gst_tax','products.unit_barcode','products.pack_quentity')->where('product_brands.product_id',$id)->first();
     
-        $units = Unit::all();
+        $units = Unit::Branch()->get();
         $categories= $this->category();//from prodyuct trait
         $sub_categories= $this->scategory();//from prodyuct trait
         $brands= $this->brand();//from prodyuct trait
