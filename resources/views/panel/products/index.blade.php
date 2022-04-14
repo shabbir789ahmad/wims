@@ -70,22 +70,19 @@
 								<td >
 									<select class="form-control brands">
 										@foreach($brands as $brand)
-									  @foreach($product->brand as $b)
-										@if($brand['id'] ==  $b['brand_id'] )
+									  	@foreach($product->brand as $b)
+										@if($b->brand_id ==  $brand['id'] )
 										<option value="{{$b['id']}}">{{$brand['brand_name']}}</option>
 										@endif
-										@endforeach 
+									
+									  @endforeach
 									  @endforeach
 									</select>
 								</td>
 								<td >
-									<input type="hidden" name="id[]" value="{{$product->id}}">
 									
 										{{ $product->product_name }}
 									
-								
-									 	
-									  
 								</td>
 									
 							

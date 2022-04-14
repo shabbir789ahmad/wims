@@ -113,7 +113,44 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-file-invoice-dollar nav-icon"></i>
+                        
+                   <p>
+                            Report
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        
+                        <li class="nav-item">
+                    <a href="{{ route('report.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-tags"></i>
+                        <p>
+                           Daily Report
+                        </p>
+                        
+                    </a>
+                </li>
 
+                 <li class="nav-item">
+                    <a href="{{ route('report.create') }}" class="nav-link">
+                        <i class="fas fa-warehouse nav-icon"></i>
+                        <p class="ml-1">
+                            Product Report
+                        </p>
+                     </a>
+                </li>
+                    </ul>
+                </li>
+                 
+                 <li class="nav-item">
+                    <a href="{{ route('branch.index') }}" class="nav-link">
+                        <i class="fa fa-copyright nav-icon"></i>
+                        <p>Branch Name</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{ route('units.index') }}" class="nav-link">
                         <i class="fa fa-copyright nav-icon"></i>
@@ -189,36 +226,7 @@
                         
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-coffee nav-icon"></i>
-                        <p>
-                            Report
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        
-                        <li class="nav-item">
-                    <a href="{{ route('report.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-tags"></i>
-                        <p>
-                           Daily Report
-                        </p>
-                        
-                    </a>
-                </li>
-
-                 <li class="nav-item">
-                    <a href="{{ route('report.create') }}" class="nav-link">
-                        <i class="fas fa-warehouse nav-icon"></i>
-                        <p class="ml-1">
-                            Product Report
-                        </p>
-                     </a>
-                </li>
-                    </ul>
-                </li>
+                
                  
                 <li class="nav-item">
                     <a href="{{ route('products.update.bulk') }}" class="nav-link">

@@ -152,7 +152,7 @@
               <!-- PERMISSION REMINDER -->
               <tr>
                 <td bgcolor="#f4f4f4" align="left" style="padding: 0px 30px 30px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 18px;" >
-                  <p style="margin: 0;">You received this email because you requested a password reset. If you did not, <a href="{{route('/')}}" target="_blank" style="color: #111111; font-weight: 700;">please contact us.</a>.</p>
+                  <p style="margin: 0;">You received this email because you requested a password reset. If you did not, <a href="" target="_blank" style="color: #111111; font-weight: 700;">please contact us.</a>.</p>
                 </td>
               </tr>
               

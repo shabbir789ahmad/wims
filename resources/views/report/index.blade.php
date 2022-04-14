@@ -64,7 +64,7 @@ font-weight: 700;
 			<div class="card-body pb-0">
 				<p class="font-weight-bold">Amount(RO)<span class="float-right font-weight-normal">{{$total_amount_today}}	</span></p>		
 				<p class="font-weight-bold">Sale<span class="float-right font-weight-normal">{{$total_sale_today}}	</span></p>		
-				<p class="font-weight-bold">Tax<span class="float-right font-weight-normal">{{$total_tax_today}}	</span></p>		
+				<p class="font-weight-bold">Tax<span class="float-right font-weight-normal">{{round($total_tax_today,3)}}	</span></p>		
 				<p class="font-weight-bold">Discount<span class="float-right font-weight-normal">{{$total_discount_today}}	</span></p>		
 			</div>
 	

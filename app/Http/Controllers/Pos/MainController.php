@@ -57,12 +57,7 @@ class MainController extends Controller {
     }
 
 
-    public function indexuser() {
-        
-      return view('posuser.index2');
-
-    }
-
+    
 
    
    

@@ -84,7 +84,7 @@ $(document).ready(function()
                        ph = baseURL + "uploads/products/" + val.product_image;
                       }
 
-                    $('#myDropdown2').css({'height':'39.6rem'});
+                    // $('#myDropdown2').css({'height':'39.6rem'});
                     var string = 
                     `<a href="#" class="p customer-tr2  border-bottom"  tabIndex="-1">
                     <div class="row r">

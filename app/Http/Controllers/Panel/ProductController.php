@@ -491,7 +491,9 @@ class ProductController extends Controller {
         $categories= $this->category();//from prodyuct trait
         $sub_categories= $this->scategory();//from prodyuct trait
         $brands= $this->brand();//from prodyuct trait
-        $stock=ProductStock::where('pbrand_id',$product['id'])->where('stock','>', 0)->where('active',1)->first();
+        $stock=ProductStock::where('pbrand_id',$product['id'])->where('active',1)->first();
+
+
      return view('panel.products.edit', compact('categories', 'sub_categories', 'product', 'brands', 'units','stock'));
 
     }

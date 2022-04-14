@@ -29,6 +29,8 @@ class Dashboard extends Model {
             'suppliers' => $suppliers,
 
         ];
+        
+         
 
     }
 

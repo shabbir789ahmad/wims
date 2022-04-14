@@ -106,7 +106,7 @@ class ReportController extends Controller
         $query=Payment::select( 'orders.sell','orders.product_id','orders.product_name','payments.biller_name','products.pack_quentity', DB::raw(' SUM(orders.sub_total) AS sub_total, SUM(orders.tax) as tax, SUM(orders.quentity) as quentity') )
             ->join('orders', 'payments.id', '=', 'orders.payment_id')
             ->join('products', 'products.id', 'orders.product_id')
-           ->groupBy('orders.sell','orders.product_id','orders.product_name','payments.biller_name','products.pack_quentity')
+           ->groupBy('orders.sell','orders.product_id','orders.product_name','payments.biller_name','products.pack_quentity')->where('payments.branch_id',Auth::user()->branch_id)
            ->whereMonth('payments.created_at', Carbon::today()->month);
 
         if($request->databetween && $request->databetween2)
@@ -170,7 +170,7 @@ class ReportController extends Controller
           ->select('product_stocks.purchasing_price')
           ->where('products.id',$id)
           ->first();
-   
+ 
          return view('report.singlereport',compact('orders','products','unit_price','piece_price'));
     }
 }

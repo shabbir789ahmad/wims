@@ -216,6 +216,9 @@ footer {
   display: inline-block;
   font-size: 16px;
 }
+.search_by_date{
+  cursor: pointer;
+}
 </style>
   </head>
   <body>
@@ -279,14 +282,14 @@ footer {
           </tr>
         </thead>
         <tbody>
-          @php $sum=0; $tax=0; $discount=0;   @endphp
+          @php $sum=0; $tax=0; $discount=0; $quentity=0;  @endphp
           @foreach($orders as $order)
           <tr style=" text-align:center;">
            
             <td >{{$order['product_name']}}</td>
             <td >{{$order['biller_name']}}</td>
              <td >{{$order['quentity']}}</td>
-             <td >{{$order['tax']}}</td>
+             <td >{{round($order['tax'],3)}}</td>
              <td >{{$order['discount']}}</td>
              @if($order['sell']=='piece')
              <td >Pack</td>
@@ -302,10 +305,17 @@ footer {
           
          
           @php $sell_by = $order['sell'] @endphp
+
+
+          @if($order['sell']=='piece')
+          @php $quentity += $order['quentity'] @endphp
+
+          @endif
+
           @endforeach
 
     <!-- calculate sum of price piece and unit -->
-             @php $sum=$piece_price.'.'.$unit_price @endphp
+             @php $sum=$piece_price + $unit_price @endphp
 
 
           <tr style="border-left: 1px solid black; border-right: 1px solid black;">
@@ -320,7 +330,7 @@ footer {
                 <p>{{$sum}}</p>
                 <p>{{$discount}} +  {{ $tax}}</p>
                 <p>{{$sum}} -  {{$discount + $tax}}</p>
-                <p>{{$sum - ($discount + $tax)}} - {{$products['purchasing_price']}}</p>
+                <p>{{$sum - ($discount + $tax)}} - {{$products['purchasing_price'] * $quentity }}</p>
               </td>
           </tr>
          
@@ -330,7 +340,7 @@ footer {
           </tr>
            <tr style="border-left: 1px solid black; border-right: 1px solid black;">
             <td colspan="6" class="grand total" style="font-weight: bold;"> TOTAL PROFIT</td>
-            <td class="grand total " colspan="5" style="font-weight: bold; background: #580631; color:#fff; text-align: center; padding:1%;">RO: {{($sum - ($discount + $tax)) - $products['purchasing_price']}}</td>
+            <td class="grand total " colspan="5" style="font-weight: bold; background: #580631; color:#fff; text-align: center; padding:1%;">RO: {{($sum - ($discount + $tax)) - $products['purchasing_price'] * $quentity}}</td>
           </tr>
         </tbody>
       </table>

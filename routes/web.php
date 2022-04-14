@@ -29,6 +29,8 @@ use App\Http\Controllers\EnvcredentialController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ReportController;
 
+use App\Http\Controllers\Branch\BranchController;
+
  
 
 Route::get('/', [AuthController::class, 'login'])->name('login');
@@ -140,9 +142,14 @@ Route::middleware(['auth:admin', 'meta'])->group(function() {
      Route::delete('user/{id}/delete', [UserController::class, 'destroy'])->name('user.delete');
 
      //generate barcode
+      Route::resource('branch', BranchController::class);
 
+      //change Branch name
       Route::resource('barcode', BarcodeController::class);
+
+      //create report
       Route::resource('report', ReportController::class);
+      //create crediential
       Route::resource('credentials', EnvcredentialController::class);
        Route::get('product/{id}/barcode',[BarcodeController::class,'productBarcode'])->name('product.barcode');
        Route::get('sub-categories/{id}/product',[BarcodeController::class,'product'])->name('sub-categories.product');

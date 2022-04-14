@@ -31,16 +31,8 @@
   .font{
   	font-size: .6rem;
   }
-  .font2{
-  	font-size: .6rem;
-  	padding: .3rem 2.8rem;
-  }
-  #myInput2
-{
-  
-  width: 23rem;
-  margin-left: 1%;
-}
+ 
+
  .card-img{
  	height:3.5rem; 
  	width:3.5rem;
@@ -90,15 +82,9 @@
    .font{
   	font-size: 1rem;
   }
-  .font2{
-  	font-size: 1rem;
-
-  }
-  #myInput2
-{
   
-  width: 42.8rem;
-}
+
+
 .d {
  	 width: 100%;
  }

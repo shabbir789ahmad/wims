@@ -12,77 +12,33 @@ use App\Models\Account;
 use App\Http\Traits\QuantityConverter;
 use DB;
 use Auth;
+use App\Http\Traits\OrderTrait;
+use App\Http\Traits\CalculateStock;
 class OrderController extends Controller
 {
 
   use QuantityConverter;
+  use OrderTrait;
+  use CalculateStock;
   
-  function setPrice($sell_type,$wholesale_one,$stock,$vat)
-  {
-               $vat=$vat/100;
-                $vat=$vat+1;
-                $vat_tax=$stock['purchasing_price'] - ($stock['purchasing_price']/$vat);
-                $vat_tax=round($vat_tax,2);
+ 
 
-    if($sell_type === 'retail' && $wholesale_one==1 || $sell_type === 'whole' && $wholesale_one==1 )
-            {
-                $price=$stock['product_price_piece'] ;
-                $price2=$stock['product_price_piece'] ;
-                $sell_type='retail';
-                
-             
-            }else if($sell_type === 'retail' && $wholesale_one==0 || $sell_type === 'whole' && $wholesale_one==0)
-            {
-                
-                $price=$stock['product_price_piece_wholesale'] ;
-                $price2=$stock['product_price_piece_wholesale'] ;
-                 $sell_type='whole';
-                 
-            } 
-
-            return ['price'=>$price,'price2'=>$price2,'sell_type'=>$sell_type,'vat_tax'=>$vat_tax];
-  }
-
-  function setPrice2($sell_type,$wholesale_one,$stock,$vat,$quentity,$pack_quentity)
-  {
-              $vat=$vat/100;
-                $vat=$vat+1;
-                $vat_tax=$stock['purchasing_price'] - ($stock['purchasing_price']/$vat);
-                $vat_tax=round($vat_tax,2);
-                $vat_tax=$vat_tax/$pack_quentity;
-                 $vat_tax=$vat_tax * $quentity;
-           
-    if($sell_type === 'retail' && $wholesale_one==1 || $sell_type === 'whole' && $wholesale_one==1 )
-            {
-                $price=$stock['product_price_unit'] ;
-                $price2=$stock['product_price_unit']*$quentity ;
-                $sell_type='retail';
-               
-            }else if($sell_type === 'retail' && $wholesale_one==0 || $sell_type === 'whole' && $wholesale_one==0)
-            {
-                
-                $price=$stock['product_price_unit_wholesale'] ;
-                $price2=$stock['product_price_unit_wholesale']*$quentity ;
-                $sell_type='whole';
-               
-            } 
-            return ['price'=>$price,'price2'=>$price2,'sell_type'=>$sell_type,'vat_tax'=>$vat_tax];
-  }
-
-  function order(Request $req)
-  {
-   
-   $id=$req->id;
-   $product = Product::
-    join('product_brands','products.id','=','product_brands.product_id')
-    ->select('products.product_name','product_brands.product_id','products.sell_by','product_brands.id','products.unit_id','products.gst_tax','products.pack_quentity','products.product_code','products.unit_barcode')
-    ->where('product_brands.id',$req->brand_id)->Branch()
-    ->first();
+function order(Request $req)
+{
+  $id=$req->id;
+  $product = Product::
+   join('product_brands','products.id','=','product_brands.product_id')
+   ->select('products.product_name','product_brands.product_id','products.sell_by','product_brands.id','products.unit_id','products.gst_tax','products.pack_quentity','products.product_code','products.unit_barcode')
+   ->where('product_brands.id',$req->brand_id)
+   ->Branch()
+   ->first();
       
-    $stock=ProductStock::where('pbrand_id',$req->brand_id)->where('active','1')->where('stock','>',0)->Branch()->first();
+   $stock=ProductStock::where('pbrand_id',$req->brand_id)->where('active','1')->where('stock','>',0)->Branch()->first();
+   
     if($product)
     {
       $sell=$req->sell_by;
+
       $price='';
       $price2='';
       $sell_type='';
@@ -96,12 +52,15 @@ class OrderController extends Controller
       
       if($sell== 'piece')
       {
-         if($stock['stock'] < $req->quentity_kg)
-         {
-               $cart=session()->get('cart');
-               return response()->json(['data'=>$cart,'fail'=>'Total'.''.$st.'product left']);
-         }else
-         {
+
+        $st=$st * $stock['pack_quentity'];
+        
+        if($stock['stock'] < $req->quentity_kg )
+        {
+            $cart=session()->get('cart');
+            return response()->json(['data'=>$cart,'fail'=>'Total'.''.$st.'product left']);
+        }else
+        {
            $dds= $this->setPrice($req->sell_type,$req->wholesale_one,$stock,$product['gst_tax']);
              $price=$dds['price'];
              $price2=$dds['price2'];
@@ -109,38 +68,47 @@ class OrderController extends Controller
              $vat=$dds['vat_tax'];
          
               //sell type retail if end
-          }
-       }else if($sell == 'unit')
-       {
+        }
+      
+      }else if($sell == 'unit')
+      {
           
-            if($req->quentity_kg >$product['pack_quentity'])
-            {
-               $quentity_in_kg=$req->quentity_kg/$product['pack_quentity'];
-            }
-    
-            if($stock['stock'] < $quentity_in_kg)
-            {
-               $cart=session()->get('cart');
-               return response()->json(['data'=>$cart,'fail'=>'Total'.''.$st.'product left']);
-            }else
-            {
-              $dds= $this->setPrice2($req->sell_type,$req->wholesale_one,$stock,$product['gst_tax'],$req->quentity_kg,$product['pack_quentity']);
-             $price=$dds['price'];
-             $price2=$dds['price2'];
-             $sell_type=$dds['sell_type'];
-             $vat=$dds['vat_tax'];
-            }
-                
-        
-         
+        $quentity_in_kg=$this->calculatestock($product['pack_quentity'],$req->quentity_kg,$id);
+             $quentity_in_kg=$req->quentity_kg + $quentity_in_kg;
 
-       }else if($sell == 'piece, unit')
-       {
-         
-       if($req->barcode==$product['product_code'])
-       {
-         $sell='piece';
-         if($stock['stock'] < $req->quentity_kg)
+            //total stock left
+            $order_quentity=$this->totalQuentityLeft($product['pack_quentity'],$stock['stock'],$stock['stock_sold_kg']);
+
+    
+        if($order_quentity < $quentity_in_kg )
+        {
+            $cart=session()->get('cart');
+            return response()->json(['data'=>$cart,'fail'=>'Total'.''.$st.'product left']);
+        }else
+        {
+            $dds= $this->setPrice2($req->sell_type,$req->wholesale_one,$stock,$product['gst_tax'],$req->quentity_kg,$product['pack_quentity']);
+            $price=$dds['price'];
+            $price2=$dds['price2'];
+            $sell_type=$dds['sell_type'];
+            $vat=$dds['vat_tax'];
+        }
+                
+      }else if($sell == 'piece, unit' || $sell == 'piece,unit')
+      {
+
+        if($req->barcode==$product['product_code'])
+        {
+           $sell='piece';
+
+           $quentity_in_kg=$this->calculatestock($product['pack_quentity'],$req->quentity_kg,$id);
+           
+           //sold + requested quentity
+             $quentity_in_kg=($req->quentity_kg * $product['pack_quentity']) + $quentity_in_kg;
+            
+            //total stock left
+            $order_quentity=$this->totalQuentityLeft($product['pack_quentity'],$stock['stock'],$stock['stock_sold_kg']);
+
+         if($order_quentity < $quentity_in_kg)
          {
                $cart=session()->get('cart');
                return response()->json(['data'=>$cart,'fail'=>'Total'.''.$st.'product left']);
@@ -153,26 +121,30 @@ class OrderController extends Controller
              $vat=$dds['vat_tax'];
               //sell type retail if end
           }
+
        }else if($req->barcode==$product['unit_barcode'])
        {
-          $sell='unit';
-         
-            if($req->quentity_kg >$product['pack_quentity'])
-            {
-               $quentity_in_kg=$req->quentity_kg/$product['pack_quentity'];
-            }
+            $sell='unit';
+            
 
-            if($stock['stock'] < $quentity_in_kg)
+            //from calculate trait
+            $quentity_in_kg=$this->calculatestock($product['pack_quentity'],$req->quentity_kg,$id);
+             $quentity_in_kg=$req->quentity_kg + $quentity_in_kg;
+           
+            //total stock left
+            $order_quentity=$this->totalQuentityLeft($product['pack_quentity'],$stock['stock'],$stock['stock_sold_kg']);
+            
+            if($order_quentity < $quentity_in_kg)
             {
                $cart=session()->get('cart');
                return response()->json(['data'=>$cart,'fail'=>'Total'.''.$st.'product left']);
             }else
             {
-             $dds= $this->setPrice2($req->sell_type,$req->wholesale_one,$stock,$product['gst_tax'],$req->quentity_kg,$product['pack_quentity']);
-             $price=$dds['price'];
-             $price2=$dds['price2'];
-             $sell_type=$dds['sell_type'];
-             $vat=$dds['vat_tax'];
+               $price_by_unit= $this->setPrice2($req->sell_type,$req->wholesale_one,$stock,$product['gst_tax'],$req->quentity_kg,$product['pack_quentity']);
+               $price=$price_by_unit['price'];
+               $price2=$price_by_unit['price2'];
+               $sell_type=$price_by_unit['sell_type'];
+               $vat=$price_by_unit['vat_tax'];
             }
                 
        
@@ -189,10 +161,11 @@ class OrderController extends Controller
         $ids=$req->barcode;
         
         if(isset($cart[$ids]) && isset($cart[$ids]['pid'])==$id)
-         {
+         {  
             $quent=$cart[$ids]['quantity']+$req->quentity_kg;
             if($sell=='piece')
             {
+                
               if($quent > $stock['stock'])
              {
              
@@ -207,16 +180,19 @@ class OrderController extends Controller
                $cart[$ids]['gst']=number_format($tax_amount, 3, '.', '');
                  
                }
-              }else if($sell=='unit')
-              {
+            }else if($sell=='unit')
+            {
                 
-                    if($quent >$product['pack_quentity'])
-                    {
-                    $new_q_kg=$quent/$product['pack_quentity'];
-                    }
+                    $quentity_in_kg=$this->calculatestock($product['pack_quentity'],$req->quentity_kg,$id);
+             $quentity_in_kg=$req->quentity_kg + $quentity_in_kg;
+
+            //total stock left
+            $order_quentity=$this->totalQuentityLeft($product['pack_quentity'],$stock['stock'],$stock['stock_sold_kg']);
+
+
+                if($order_quentity < $quentity_in_kg )
+                 {
            
-                    if($stock['stock']<$new_q_kg)
-                    {
                         $cart=session()->get('cart');
                          return response()->json(['data'=>$cart,'fail'=>'Total'.''.$st.'product left']);
                     }else
@@ -227,7 +203,8 @@ class OrderController extends Controller
                        $cart[$ids]['gst']=number_format($tax_amount, 3, '.', '');
                     }
                 
-              } 
+            } 
+         
          }else
          {
 
@@ -284,6 +261,10 @@ class OrderController extends Controller
         }
     }
 
+    
+
+    
+
 public function updateSessionOrder(Request $request)
 {
    $new_q_fit='';
@@ -294,19 +275,47 @@ public function updateSessionOrder(Request $request)
      $quentity= $request->quentity_kg;
      $stock=ProductStock::where('pbrand_id',$request->brand_id)
       ->first();
-       $product=Product::where('id',$request->product_id)->select('pack_quentity')
+       $product=Product::where('id',$request->product_id)->select('pack_quentity','gst_tax')
        ->first();
+
+       $vat=$this->gstCalculate($product['gst_tax'],$stock['purchasing_price']);
            
      if($request->sell=='P')
      {
-        if($quentity >$stock->stock)
+         if($product['pack_quentity'])
+         {
+          $unit_stock_check=0;
+          $cart=session()->get('cart');
+            
+              foreach($cart as $c)
+              {
+              
+               if($c['pid']==$request->product_id && $c['sell_by']== 'unit')
+                {
+                 
+                 $unit_stock_check += $c['quantity'];
+
+                }
+              }
+          
+               
+               $new_quentity=($request->quentity_kg * $product['pack_quentity']) + $unit_stock_check;
+              
+               $order_quentity=$this->totalQuentityLeft($product['pack_quentity'],$stock['stock'],$stock['stock_sold_kg']);
+          }else
+          {
+             $new_quentity=$request->quentity_kg;
+             $order_quentity=$stock['stock'];
+
+          }
+        if($new_quentity >$order_quentity)
         {
          
           return response()->json(['data'=>$data,'fail'=>'No more Stock']);
         }else
         {
           $data[$request->id]["quantity"] = $request->quentity_kg;
-          $data[$request->id]["gst"] = $data[$request->id]["gst"]* $request->quentity_kg;
+          $data[$request->id]["gst"] = $vat * $request->quentity_kg;
           $data[$request->id]["sub_total"] = $request->sub_total;
           $data[$request->id]["price"] = $request->price;
           session()->put('cart', $data);
@@ -314,29 +323,40 @@ public function updateSessionOrder(Request $request)
         }
     
      }else if($request->sell=='U')
-     {
-        
-                // if($request->quentity_kg>$product['pack_quentity'])
-                // {
-                //     $new_q_fit=$request->quentity_kg/$product['pack_quentity'];
-                // }else{
-                //     $new_q_fit=$request->quentity_kg;
-                // }
-           
+     {   
+
+
+          $pack_stock_check=0;
+          
+            
+              foreach($data as $c)
+              {
+              
+               if($c['pid']==$request->product_id && $c['sell_by']== 'piece')
+                {
                  
-                // if(floor($new_q_fit) >$stock->stock)
-                // {
-                //   return response()->json(['data'=>$data,'fail'=>'No more Stock']);
-                // }else
-                // {
-                  $data[$request->id]["quantity"] = $request->quentity_kg;
-                  $data[$request->id]["gst"] = $data[$request->id]["gst"] * $request->quentity_kg;
+                 $pack_stock_check += $c['quantity'];
+
+                }
+              }
+              
+               $new_quentity=$request->quentity_kg + ( $product['pack_quentity'] * $pack_stock_check);
+                 
+               $order_quentity=$order_quentity=$this->totalQuentityLeft($product['pack_quentity'],$stock['stock'],$stock['stock_sold_kg']);
+                
+               if($order_quentity < $new_quentity)
+               {
+                  return response()->json(['data'=>$data,'fail'=>'No more Stock']);
+                }else
+                {
+                   $data[$request->id]["quantity"] = $request->quentity_kg;
+                  $data[$request->id]["gst"] = ($vat / $product['pack_quentity']) * $request->quentity_kg;
                   $data[$request->id]["sub_total"] = $request->sub_total;
                   $data[$request->id]["price"] = $request->price;
                   session()->put('cart', $data);
                   $cart=session()->get('cart');
                   return response()->json(['success'=>'Product updated  successfully','data'=>$cart]);
-                // }
+                }
 
            
             }

@@ -159,16 +159,16 @@
  <div class="row"  style="overflow:hidden">
   <div class="col-12 col-md-6 col-sm-12">
    <div class="row p-2 bg-dark"><!--top navbar right button-->
-    <div class="col-sm-4 col-md-3">
+    <div class="col-sm-3 col-md-3">
       <button class="btn btn-lg hold-sale2 fg font2" data-id="1" id="cateory_sidebar" >Category</button>
     </div>
-    <div class="col-sm-4 col-md-3">
+    <div class="col-sm-3 col-md-3">
      <button class="btn btn-xl order2 fg2 font2" data-id="2" id="brand" >Brand</button>
     </div>
-    <div class="col-sm-4 col-md-3">
+    <div class="col-sm-3 col-md-3">
       <button class="btn btn-xl payment2 fg3 font2" data-id="3" id="feature">Invoice</button>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 col-sm-3">
       <input type="text"  id="tb" class="form-control" placeholder="Barcode scanner code ">
     </div>
    </div><!--end top navbar -->
@@ -177,7 +177,7 @@
     <div class="col-12 col-md-12 p-0">
       <div class="dropdowns2 hide-mdrop2 d-flex " id="check" tabindex="0">
         <input type="text" placeholder="Search.." class="searchkey2"  id="myInput2" onkeyup="filterFunction2()" data-id="2"><i class="fas fa-times text-light bg-cut p-2 fa-lg" id="search_cut2"></i>
-        <div id="myDropdown2" class="dropdown-content d myDropdown2" style="overflow:auto" tabindex="0">
+        <div id="myDropdown2" class="dropdown-content d myDropdown2 myDropdown2_height" style="overflow:auto; " tabindex="0">
     
          </div>
       </div>
@@ -250,7 +250,7 @@
     </div><!-- daily sale code end here-->
     <div class="row"><!--sale item code here-->
      <div class="col-12 col-md-12 p-1">
-      <div class="table-responsive"  style="height: 26.8rem; overflow-y: auto; width: 100%; ">
+      <div class="table-responsive table_height"  style=" overflow-y: auto; width: 100%; ">
           <table class="table w-100" >
             <thead class="table-head">
                 <tr class="table-font">
@@ -304,8 +304,8 @@
         </div><!-- total code here end-->
         <div class="d-flex flex-direction-row mt-1 justify-content-center" id="payment_button">
             <button type="button" class="btn cancel font" id="cancel">Cancel</button>
-            <button type="button" class="btn order partial-payment2 font" data-id="1">Temporary Account</button>
-            <button type="button" class="btn hold-sale partial-payment2 font" data-id="0">Permanent Account</button>
+            <button type="button" class="btn order partial-payment2 font" data-id="1" disabled>Temporary Account</button>
+            <button type="button" class="btn hold-sale partial-payment2 font" data-id="0" disabled>Permanent Account</button>
             <button type="button" class="btn payment font" tabindex="0" id="payment">Payment</button>
             <!-- <button type="button" class="btn payment print" >Print Recipt</button> -->
           </div>
@@ -827,6 +827,7 @@ $(document).ready(function()
         {
              $(this).find('[autofocus]').focus();
         });
+
         //kedown event code
         $('#select_unit_type').off().on('keydown',function(e)
         { 
@@ -848,8 +849,8 @@ $(document).ready(function()
                 .children('#select_quentity_kg2')
                 .val();
               
-                let se='unit';
-                getorders(id,q_kg,unit,se,brand_id,type,wholesale_one);
+               
+                getorders(id,q_kg,unit,sell,brand_id,type,wholesale_one);
                 $('#select_unit_type').modal('hide');
                 $('#unit_qu').css('display','none');
                 $('#select_quentity_kg2').val('');
@@ -881,7 +882,7 @@ $(document).ready(function()
         {
             $(this).prop('disabled', true);
             let quentity='';
-            let sell='piece';
+       
            barcode=product_code;
             getorders(id,quentity,unit,sell,brand_id,type,wholesale_one,barcode);
             $('#select_unit_type').modal('hide');
@@ -914,8 +915,8 @@ $(document).ready(function()
               .children('#select_quentity_kg2')
               .val();
               barcode=unit_code;
-              let se='unit';
-              getorders(id,q_kg,unit,se,brand_id,type,wholesale_one,barcode);
+              
+              getorders(id,q_kg,unit,sell,brand_id,type,wholesale_one,barcode);
               $('#select_unit_type').modal('hide');
               $('#unit_qu').css('display','none');
               $('#select_quentity_kg2').val('');

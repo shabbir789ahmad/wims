@@ -57,7 +57,7 @@
 						</table>
 					</div>
 				@else
-					<x-alert.resource-empty resource="brands" new="payable.supplier"></x-alert.resource-empty>
+					<x-alert.resource-empty resource="Payments" new="payable.supplier"></x-alert.resource-empty>
 				@endif			
 			</div>
 		</div>

@@ -9,6 +9,8 @@ use App\Models\Admin;
 use App\Services\LogService;
 use App\Http\Traits\ImageTrait;
 
+
+
 class AuthController extends Controller {
     
     use ImageTrait;
@@ -36,6 +38,11 @@ class AuthController extends Controller {
             $request->session()->regenerate();
 
             (new LogService)->createLoginLogEntry();
+           
+
+
+           
+
 
             return redirect()->intended('dashboard');
         }

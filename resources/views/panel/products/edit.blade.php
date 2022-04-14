@@ -93,10 +93,11 @@
 								<label for="">
 									Unit
 								</label>
+							
 								<select name="unit_id" id="unit_id" class="form-control">
-									<option value="">Select Unit</option>
+									
 									@foreach($units as $unit)
-									<option value="{{ $unit->id }}" @if($unit->id == $product->unit_id) selected @endif>{{ $unit->unit_name }}</option>
+									<option value="{{ $unit->id }}" @if($unit['id'] == $product->unit_id) selected @endif>{{ $unit->unit_name }}</option>
 									@endforeach
 								</select>
 							</div>

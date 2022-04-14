@@ -197,3 +197,93 @@ border: 1px solid #3E065F;
 
 }
 /*.show {display: block;}*/
+
+
+
+@media (max-width: 968px) {
+
+ .table_height{
+    height: 30rem;
+}
+
+
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+  
+  .table_height
+  {
+    height: 30rem;
+   }
+
+   .myDropdown2_height{
+    height: 768px;
+    overflow: auto;
+   }
+
+
+  #myInput2
+   {
+  
+      width: 23rem;
+      margin-left: 1%;
+  }
+  .font2{
+    font-size: 1rem;
+    padding: .3rem 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1500px) {
+  
+  .table_height
+  {
+    height: 27rem;
+   }
+
+   .myDropdown2_height{
+    height: 670px;
+    overflow: auto;
+   }
+  
+  #myInput2
+   {
+  
+     width: 47rem;
+     margin-left: 1%;
+   }
+
+   .font2{
+    font-size: 1rem;
+    padding: .3rem 2.5rem;
+  }
+}
+
+@media (min-width: 1500px) and (max-width: 2100px) {
+  
+  .table_height
+  {
+    height: 900px;
+   }
+   .myDropdown2_height{
+    height: 1080px;
+    overflow: auto;
+   }
+
+  #myInput2
+   {
+  
+  width: 60rem;
+  margin-left: 1%;
+  }
+
+  .font2{
+    font-size: 1rem;
+    padding: .3rem 4rem;
+  }
+}
+
+
+
+
+
+

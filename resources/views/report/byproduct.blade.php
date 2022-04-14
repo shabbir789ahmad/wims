@@ -1,18 +1,7 @@
 @extends('panel.master')
 @section('content')
 
-<!-- <div class="row">
-	<div class="col-12">
-		<div class="form-group">
-			<div class="btn-group" role="group" aria-label="Basic example">
-				<a href="{{ route('products.create') }}" class="btn btn-primary">
-					Create Single
-				</a>
-			
-			</div>
-		</div>
-	</div>
-</div> -->
+
 <div class="card">
   <div class="card-body">
   	<div class="row">
@@ -70,6 +59,7 @@
 		 <th scope="col">Name</th>
 		 <th scope="col">Biller Name</th>
 		 <th scope="col">Quentity</th>
+		 <th scope="col">Sell By</th>
 		 <th scope="col">Total</th>
 		 <th scope="col">Tax</th>
 		 <th scope="col">Discount</th>
@@ -87,6 +77,7 @@
 		  <td>{{ $product->quentity }}</td>
 		  @elseif($product['sell']=='unit')
 		  
+		  @if($product['pack_quentity'])
 		   @if($product['pack_quentity'] <= $product->quentity)
 		   @php  $qu=$product->quentity/$product['pack_quentity'] @endphp
              <td>{{ round($qu,1) }}</td>
@@ -94,9 +85,11 @@
               <td>0.{{ $product->quentity }}</td>
             @endif
             
+            @endif
 		  @endif
+		  <td>{{ $product->sell }}</td>
 		  <td>{{ $product->sub_total }}</td>
-		  <td>{{ $product->tax }}</td>
+		  <td>{{ round($product->tax,3)	 }}</td>
 		
 		 
 		  <td class="col-1">
