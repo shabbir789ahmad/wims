@@ -13,7 +13,7 @@
 						<div class="col-12 col-md-6">
 							<div class="form-group">
 								<label for="">
-									Product Name</span>
+									Branch Name</span>
 								</label>
 								<x-forms.input name="branch_name" value="{{$branchs['branch_name']}}" ></x-forms.input>
 							</div>

@@ -12,7 +12,7 @@ $(document).ready(function(){
     //  }
 
     // });
-	$('.disc-modal').click(function(){
+    $('.disc-modal').click(function(){
 
        discountmodal();
      });
@@ -22,13 +22,13 @@ $(document).ready(function(){
     });
   function discountmodal()
   {
-    if( $('#pos-table').children().length ==0)
+    if( $('#pos-table').children().length ===0)
        {
          alert ('Please Select At Least One Prodcut');
-         $('#discount-modal').modal('hide')
+         $('#discount-modal').modal('hide');
        }else
        {
-         $('#discount-modal').modal('show')
+         $('#discount-modal').modal('show');
          $('#discount-modal').on('shown.bs.modal', function() {
           
            $(this).find('[autofocus]').focus();
@@ -40,66 +40,67 @@ $(document).ready(function(){
   function discount()
   {
  
-        let text_value=$('#discount-input').val()
-        let grand_total=$('#g_total').text()
-        let discount= $('#discount').text()
+        let text_value=$('#discount-input').val();
+        let grand_total=$('#g_total').text();
+        let discount= $('#discount').text();
         let tax=$('#tax').text();
-       
-        let t=grand_total+parseInt(tax)-text_value
-         t=Number.parseFloat(t).toFixed(2)
+       text_value=Number.parseFloat(text_value).toFixed(3);
+        let t=grand_total+parseInt(tax)-text_value;
+         t=Number.parseFloat(t).toFixed(3);
+         
         let check=$('#pos-table1').children('.table-product').find('#discount_td');
         let check2=$('#pos-table3').children('.printer-tr').find('#discount_td2');
         if(check.length===0)
         {
           $('#pos-table1:last-child').append(`<tr class="table-product"><td class="col-6">Discount</td><td></td><td></td><td></td><td></td><td></td><td></td><td class="float-right col-6 font-weight-bold mr-3" id="discount_td">`+text_value+`</td</tr>`);  
         }else{
-            $('#pos-table1').children('.table-product').find('#discount_td').text(text_value)
+            $('#pos-table1').children('.table-product').find('#discount_td').text(text_value);
         }
         if(check2.length===0)
         {
           $('#pos-table3:last-child').append(`<tr class="printer-tr border-bottom" style="display: flex;flex-direction:row; width:100%;"><td class="col-10">Discount</td><td class="ml-auto col-2 font-weight-bold" id="discount_td2">`+text_value+`</td</tr>`);  
         }else{
-            $('#pos-table3').children('.printer-tr').find('#discount_td2').text(text_value)
+            $('#pos-table3').children('.printer-tr').find('#discount_td2').text(text_value);
         }
-        $('.grand_total').val(t)
-        $('.g_total2').text(t)
-        $('#discount').text(text_value)
-        $('.discount2').val(text_value)
+        $('.grand_total').val(t);
+        $('.g_total2').text(t);
+        $('#discount').text(text_value);
+        $('.discount2').val(text_value);
         
-        $('#discount-modal').modal('hide')
+        $('#discount-modal').modal('hide');
 
   }
 
    $('#tax-button').click(function(){
 
-     let text_value=$('#tax-input').val()
-     const grand_total=$('.grand_total').val()
+     let text_value=$('#tax-input').val();
+     const grand_total=$('.grand_total').val();
 
      let t;
      if(text_value==0)
      {
        
      }else{
-       t=parseInt(text_value)/100 * parseInt(grand_total) 
-       t=Math.floor(t)
-       let g=$('.grand_total').val()
-       tex=parseInt(g)+parseInt(t)
-     $('.grand_total').val(tex)
-     $('#g_total').text(tex)
-     $('.g_total2').text(tex)
+       t=parseInt(text_value)/100 * parseInt(grand_total) ;
+       t=Math.floor(t);
+       let g=$('.grand_total').val();
+       tex=parseInt(g)+parseInt(t);
+     $('.grand_total').val(tex);
+     $('#g_total').text(tex);
+     $('.g_total2').text(tex);
      }
      
      
 
-       let tax= $('#tax').text()
+       let tax= $('#tax').text();
         tax=parseInt(text_value)  + parseInt(tax);
-        $('#tax').text(tax +'%')
+        $('#tax').text(tax +'%');
         
-        $('.tax3').text(tax +'%')
+        $('.tax3').text(tax +'%');
 
-    $('#tax-modal').modal('hide')
+    $('#tax-modal').modal('hide');
 
-	});
+    });
 
    //hide search bar in pos search option
 
@@ -129,19 +130,19 @@ $(document).ready(function(){
   $(document).click(function(e){
     var container = $(".fg");
     if(!container.is(e.target) && container.has(e.target).length === 0){
-        $('#myNav').css('width','0%')
+        $('#myNav').css('width','0%');
     }
     
 
-  var container = $(".fg2");
+   container = $(".fg2");
     if(!container.is(e.target) && container.has(e.target).length === 0){
 
-        $('#myNav2').css('width','0%')
+        $('#myNav2').css('width','0%');
     }
-    var container = $(".fg3");
+     container = $(".fg3");
     if(!container.is(e.target) && container.has(e.target).length === 0){
 
-        $('#myNav3').css('width','0%')
+        $('#myNav3').css('width','0%');
     }
 
 });
@@ -149,12 +150,12 @@ $(document).ready(function(){
 
     if($(this).data('id')=='1')
     {
-      $('#myNav').css('width','50%')
+      $('#myNav').css('width','50%');
 
     }else if($(this).data('id')=='2'){
-       $('#myNav2').css('width','50%')
+       $('#myNav2').css('width','50%');
     }else if($(this).data('id')=='3'){
-       $('#myNav3').css('width','50%')
+       $('#myNav3').css('width','50%');
     }
      
      });
@@ -163,11 +164,11 @@ $(document).ready(function(){
      
     if($(this).data('id')=='1')
     {
-        alert ($(this).data('id'))
-      $('#myNav').css('width','0%')
+        alert ($(this).data('id'));
+      $('#myNav').css('width','0%');
 
     }else if($(this).data('id')=='2'){
-       $('#myNav2').css('width','0%')
+       $('#myNav2').css('width','0%');
     }
      
     });
@@ -179,8 +180,8 @@ $(document).ready(function(){
     let Frate=$('#Frate').val();
     let Laborer=$('#Laborer').val();
     let other=$('#other').val();
-    const grand_total=$('#g_total').text()
-     let discount=$('#discount').text()
+    const grand_total=$('#g_total').text();
+     let discount=$('#discount').text();
     if(!Frate){Frate=0}
     if(!Laborer){Laborer=0}
     if(!other){other=0}

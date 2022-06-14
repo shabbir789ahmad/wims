@@ -72,8 +72,9 @@
 									Sell By <span class="text-danger">*</span>
 								</label>
 								<select name="sell_by[]" id="sell_by" class="form-control selectpicker border bg-light" multiple >
-									<option value="piece" >Piece</option>
+									<option value="piece" >Pack</option>
 									<option value="unit" >Unit</option>
+									<option value="fruit" >Fruit + Veg</option>
 								</select>
                             <span class="text-danger small">@error ('sell_by') <i class="fa fa-times-circle"></i>{{$message}} @enderror</span>
 							
@@ -83,14 +84,25 @@
 						
 					</div>
 					
-					
+					<div id="by-fruit" class="row d-none">
+						<div class="col-12 col-md-6">
+							<div class="form-group">
+								<label for="">
+									Selling Price  <span class="text-danger">*</span>
+								</label>
+								<x-forms.input name="selling_price" placeholder="Selling Price "></x-forms.input>
+							</div>
+						</div>
+						
+					</div>
+
 					<div id="by-piece" class="row d-none">
 						<div class="col-12 col-md-6">
 							<div class="form-group">
 								<label for="">
 									Price Per Pack <span class="text-danger">*</span>
 								</label>
-								<x-forms.input name="product_price_piece"></x-forms.input>
+								<x-forms.input name="product_price_piece" placeholder="Product price pack"></x-forms.input>
 							</div>
 						</div>
 						<div class="col-12 col-md-6">
@@ -98,7 +110,7 @@
 								<label for="">
 									Wholesale Price Per Pack <span class="text-danger">*</span>
 								</label>
-								<x-forms.input name="product_price_piece_wholesale"></x-forms.input>
+								<x-forms.input name="product_price_piece_wholesale" placeholder="Product price pack wholesale"></x-forms.input>
 							</div>
 						</div>
 					</div>
@@ -151,7 +163,7 @@
 					</div>
 					<div class="row">
 						
-						<div class="col-12 col-md-3">
+						<div class="col-12 col-md-4">
 							<div class="form-group">
 								<label for="">
 									Stock<span class="text-danger">*</span>
@@ -160,7 +172,7 @@
 							</div>
 						</div>
 						
-						<div class="col-12 col-md-3">
+						<div class="col-12 col-md-4">
 							<div class="form-group">
 								<label for="">
 									Purchasing Price
@@ -169,20 +181,20 @@
 							</div>
 						</div>
 
-						<div class="col-12 col-md-3">
+						<div class="col-12 col-md-4">
 						  <div class="form-group">
 							<label for="">VAT% </label>
 							<x-forms.input name="vat " placeholder="VAT%" autofocus></x-forms.input>
 						 </div>
 						</div>
-						<div class="col-12 col-md-3">
+						<!-- <div class="col-12 col-md-3">
 							<div class="form-group">
 								<label for="">
 									Weight
 								</label>
 								<x-forms.input name="product_weight"></x-forms.input>
 							</div>
-						</div>
+						</div> -->
 					</div>
 					<div class="col-12 col-md-2">
 							<div class="form-group">
@@ -229,13 +241,21 @@
 			if (selected.includes("piece") && selected.includes("unit")) {
 				$('#by-piece').removeClass('d-none');
 				$('#by-unit').removeClass('d-none');
+				$('#by-fruit').addClass('d-none');
 			}
 			else if (selected.includes("piece")) {
 				$('#by-piece').removeClass('d-none');
 				$('#by-unit').addClass('d-none');
+				$('#by-fruit').addClass('d-none');
+            }
+		    else if (selected.includes("fruit")) {
+				$('#by-fruit').removeClass('d-none');
+				$('#by-piece').addClass('d-none');
+				$('#by-unit').addClass('d-none');		
 			} else if (selected.includes("unit")) {
 				$('#by-piece').addClass('d-none');
 				$('#by-unit').removeClass('d-none');
+				$('#by-fruit').addClass('d-none');
 			}
 
 		});

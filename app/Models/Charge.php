@@ -20,4 +20,7 @@ class Charge extends Model
        return $query->where('branch_id',Auth::user()->branch_id);
         
     }
+
+
+    
 }

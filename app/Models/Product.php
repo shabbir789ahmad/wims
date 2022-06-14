@@ -35,13 +35,22 @@ class Product extends Model {
 
 
     
-    public function scopeBranch( $query) {
+    public function scopeBranch( $query)
+    {
 
-       return $query->where('products.branch_id',Auth::user()->branch_id);
-        
+       return $query
+          ->where('products.branch_id',Auth::user()
+          ->branch_id);
     }
 
-   
+    function brands()
+    {
+        return $this->hasMany(ProductBrand::class)
+           ->select('id', 'brand_id','product_id');
+    }
+    
+
+
 
     public static function getProducts() {
         

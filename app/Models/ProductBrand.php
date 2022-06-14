@@ -13,4 +13,9 @@ class ProductBrand extends Model
         'product_id',
         'brand_id',
       ];
+
+       public  function stocks()
+    {
+       return $this->hasMany(ProductStock::class,'pbrand_id')->select('stock', 'stock_sold','pbrand_id');
+    }
 }

@@ -754,12 +754,13 @@ $(document).ready(function()
   
    $(document).on('click', '.pos-product', function(event)
     {
+    
       alldata($(this));
          
     });
    function alldata($this)
    {
-    $('#piece').prop('disabled', false);
+         $('#piece').prop('disabled', false);
          $('#unit').prop('disabled', false);
          let id=$this.data('product-id');
          let sell=$this.data('sell_by');
@@ -784,9 +785,11 @@ $(document).ready(function()
     let quentity='';
     if(whole==1){ type="whole"; } else { type="retail";}
     
-    if(sell=='piece')
-    {  $('#check').focus();
-  let barcode=product_code;
+    if(sell=='piece' || sell=='fruit')
+    {  
+   
+       $('#check').focus();
+       let barcode=product_code;
         getorders(id,quentity,unit,sell,brand_id,type,wholesale_one,barcode);
     
     }else if(sell == 'unit')
@@ -976,7 +979,7 @@ var barcode="";
 
   function getorders(id,quentity,unit,sell,brand_id,sell_type,wholesale_one,barcode)
     {
-     
+ 
       if(quentity==''){ quentity=1; }
       $.ajax({
                 cache:false,
@@ -1152,7 +1155,7 @@ function brndtip()
         sum += parseFloat($(this).val());    
       }         
    });
-
+  
    let sum2 = 0;        
    $(".vat").each(function() 
    {         
@@ -1161,10 +1164,11 @@ function brndtip()
        sum2 += parseFloat($(this).val());    
       }         
    });
+ 
        sum2=Number.parseFloat(sum2).toFixed(2)   
         $('.g_total3').text(sum2)
         // sum=parseFloat(sum) + parseFloat(sum2) ; 
-       sum= Number.parseFloat(sum).toFixed(2)
+        //sum= Number.parseFloat(sum).toFixed(2)
 
     let d=$('#discount').text()
     let tax=$('#tax').text()
@@ -1172,7 +1176,7 @@ function brndtip()
     {
  
       sum=sum-d;
-      
+     
       sum=Number.parseFloat(sum).toFixed(2)
       $('.grand_total').val(sum)
       $('#g_total').text(sum)
@@ -1180,6 +1184,7 @@ function brndtip()
     
     }
     
+     sum=Number.parseFloat(sum).toFixed(2)
       $('#g_total').text(sum)
       $('.g_total2').text(sum)
     

@@ -115,7 +115,7 @@ $(document).ready(function()
                             
                               <button class="btn  single_brand text-light text-left mt-2 pos-product p-2 mb-0" data-product-id="${val.id}"  
                             data-sell_by="${val.sell_by}" data-unit="${val.unit_id}" data-brand="${val2.id}" data-barcode="${val.product_code}" data-unitcode="${val.unit_barcode}"
-                               style="width:15rem;background-color:">${val2.brand_name.substring(0,25)}<span class="float-right">RO ${price}</span></button>
+                               style="width:15rem;background-color:">${val2.brand_name.substring(0,25)} <span class="float-right">RO ${price}</span></button>
 
                               
                                 `; }

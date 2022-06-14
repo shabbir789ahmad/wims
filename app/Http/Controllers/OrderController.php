@@ -14,24 +14,27 @@ use DB;
 use Auth;
 use App\Http\Traits\OrderTrait;
 use App\Http\Traits\CalculateStock;
+use App\Http\Traits\SearchProduct;
 class OrderController extends Controller
 {
 
   use QuantityConverter;
   use OrderTrait;
   use CalculateStock;
+  use SearchProduct;
   
  
 
 function order(Request $req)
 {
   $id=$req->id;
-  $product = Product::
-   join('product_brands','products.id','=','product_brands.product_id')
-   ->select('products.product_name','product_brands.product_id','products.sell_by','product_brands.id','products.unit_id','products.gst_tax','products.pack_quentity','products.product_code','products.unit_barcode')
-   ->where('product_brands.id',$req->brand_id)
-   ->Branch()
-   ->first();
+  
+
+  /* 
+   * from search Product trait calss
+   */ 
+
+  $product = $this->searchByBrand($req->brand_id);
       
    $stock=ProductStock::where('pbrand_id',$req->brand_id)->where('active','1')->where('stock','>',0)->Branch()->first();
    
@@ -50,7 +53,32 @@ function order(Request $req)
       $vat='';
       $st=$stock['stock'] ;
       
-      if($sell== 'piece')
+
+      if($sell== 'fruit')
+      {
+
+        $st=1000 * $st;
+        $weight=$this->productWeight($req->barcode);
+        $new_weight=$weight['k'];
+        $new_weight2=$weight['new_kg'];
+        if($st < $new_weight )
+        {
+            $cart=session()->get('cart');
+            return response()->json(['data'=>$cart,'fail'=>'Total'.''.$st.'product left']);
+        }else
+        {
+           $dds= $this->setPrice($req->sell_type,$req->wholesale_one,$stock,$product['gst_tax']);
+             $price=$dds['price']/1000 ;
+             $price2=($dds['price2'] / 1000) * $new_weight;
+
+              $quentity=$new_weight2;
+             $sell_type=$dds['sell_type'];
+             $vat=$dds['vat_tax'];
+         
+              //sell type retail if end
+        }
+      
+      }elseif($sell== 'piece')
       {
 
         $st=$st * $stock['pack_quentity'];
@@ -66,7 +94,7 @@ function order(Request $req)
              $price2=$dds['price2'];
              $sell_type=$dds['sell_type'];
              $vat=$dds['vat_tax'];
-         
+             $quentity=$req->quentity_kg;
               //sell type retail if end
         }
       
@@ -91,6 +119,7 @@ function order(Request $req)
             $price2=$dds['price2'];
             $sell_type=$dds['sell_type'];
             $vat=$dds['vat_tax'];
+            $quentity=$req->quentity_kg;
         }
                 
       }else if($sell == 'piece, unit' || $sell == 'piece,unit')
@@ -119,6 +148,7 @@ function order(Request $req)
              $price2=$dds['price2'];
              $sell_type=$dds['sell_type'];
              $vat=$dds['vat_tax'];
+             $quentity=$req->quentity_kg;
               //sell type retail if end
           }
 
@@ -145,6 +175,7 @@ function order(Request $req)
                $price2=$price_by_unit['price2'];
                $sell_type=$price_by_unit['sell_type'];
                $vat=$price_by_unit['vat_tax'];
+               $quentity=$req->quentity_kg;
             }
                 
        
@@ -155,7 +186,10 @@ function order(Request $req)
 
        }
 
-          
+        /*
+         * update if user click
+         * product Again
+        */  
 
         $cart = session()->get('cart', []);
         $ids=$req->barcode;
@@ -163,7 +197,28 @@ function order(Request $req)
         if(isset($cart[$ids]) && isset($cart[$ids]['pid'])==$id)
          {  
             $quent=$cart[$ids]['quantity']+$req->quentity_kg;
-            if($sell=='piece')
+
+            if($sell=='fruit')
+            {
+                $st=1000 * $st;
+                $updated_weight=($cart[$ids]['quantity']*1000)+$new_weight;
+
+              if($new_weight > $st)
+             {
+             
+              $cart=session()->get('cart');
+              return response()->json(['data'=>$cart,'fail'=>'Total'.''.$stock['stock'].'product left']);
+
+              }else
+              { 
+               $cart[$ids]['quantity']=number_format($cart[$ids]['quantity']+$new_weight2,3,'.','');
+           
+               $cart[$ids]['sub_total']=$updated_weight*$cart[$ids]['price'];
+               $tax_amount=$cart[$ids]['gst']+$vat;
+               $cart[$ids]['gst']=number_format($tax_amount, 3, '.', '');
+                 
+               }
+            }elseif($sell=='piece')
             {
                 
               if($quent > $stock['stock'])
@@ -214,7 +269,7 @@ function order(Request $req)
                      'pid' => $product['product_id'],
                      'purchasing_price' => $stock['purchasing_price'],
                      "name" => $product['product_name'],
-                     "quantity" => $req->quentity_kg,
+                     "quantity" => $quentity,
                      "sell_by" => $sell,
                      "unit_id" => $product['unit_id'],
                      "gst" => $vat??0,
@@ -279,8 +334,24 @@ public function updateSessionOrder(Request $request)
        ->first();
 
        $vat=$this->gstCalculate($product['gst_tax'],$stock['purchasing_price']);
-           
-     if($request->sell=='P')
+       
+   if($request->sell=='F')
+   {
+       
+      if($request->quentity_kg > ($stock['stock']*1000))
+      {
+         return response()->json(['data'=>$data,'fail'=>'No more Stock']);
+      }else
+      {
+
+         $data[$request->id]['quantity']=$request->quentity_kg;
+
+         $data[$request->id]["sub_total"]=$request->price * $request->quentity_kg;
+         session()->put('cart', $data);
+          return response()->json(['success'=>'Product updated  successfully','data'=>$data]);
+      }
+
+   }elseif($request->sell=='P')
      {
          if($product['pack_quentity'])
          {
@@ -366,36 +437,50 @@ public function updateSessionOrder(Request $request)
 
 
 
-  //get data to print
-   // function dataPrint()
-   // {
-   //    $data=session('cart');
-   //    return response()->json($data);
-   // }
+ 
    function dataCanner(Request $req)
    {
 
-      $data=Product::join('product_brands','products.id','=','product_brands.product_id')->select('product_brands.id','products.sell_by','products.unit_id','product_brands.product_id')->where('product_code',$req->id)->orWhere('unit_barcode',$req->id)->first();
+      /*
+        * from SearchBYBarcoe Trait
+     */
+      $data=$this->searchBarcode($req->id);
+
       if($data)
       {
           return response()->json($data);
      
-      }else{
+      }else
+      {
+
+       
+         $arr=str_split($req->id);
+         $codes=null;
+         $code=array_slice($arr, 2, 5);
+         for($i = 0; $i < count($code); $i++)
+         {
+            $codes .=  $code[$i];
+         }
+    
+       
+         /*
+          * from SearchBYBarcoe Trait
+          */ 
+        $data=$this->searchBarcode($codes);
+
+         if($data)
+         {
+             return response()->json($data);
+         }else
+         {
+            return response()->json('No matching Product Found');
+         }
       
-        return response()->json('No matching Product Found');
+        
      }
    }
 
-    // function getOrders()
-    // {
-    //    $products = Product::
-    //    join('orders','products.id','=','orders.product_id')
-    //    ->join('product_stocks','products.id','=','product_stocks.product_id')->paginate(10);
-    //    $brands=Brand::all();
-    //   //dd($products);
-    //      return view('pos.order',compact('products','brands'));
-       
-    // }
+    
 
     function getProduct($id)
     {
@@ -406,7 +491,7 @@ public function updateSessionOrder(Request $request)
 
  function orderPayment(Request $req)
  {
-
+  
    // dd(session()->get('cart'));
     $validator = \Validator::make($req->all(), [
         
@@ -439,25 +524,25 @@ public function updateSessionOrder(Request $request)
        }
 
       if(session('cart'))
-              {
-                foreach(session('cart') as $details)
-                {
+       {
+         foreach(session('cart') as $details)
+         {
             
-                  $order= Order::create([
+             $order= Order::create([
 
-                    'product_id' => $details['pid'],
-                    'pack_quentity' => $details['pack_quentity'],
-                    'product_name' => $details['name'],
-                    'sell' => $details['sell_by'],
-                    'quentity' => $details['quantity'],
-                    'sub_total' => $details['sub_total'],
-                    'unit' => $details['unit_id'],
-                    'payment_id' =>$payment['id'],
-                    'sell_type' =>$payment['sell_type'],
-                    'tax' =>$details['gst'],
-                     'branch_id'=>Auth::user()->branch_id,
-                    ]);
-                }
+             'product_id' => $details['pid'],
+             'pack_quentity' => $details['pack_quentity'],
+             'product_name' => $details['name'],
+             'sell' => $details['sell_by'],
+             'quentity' => $details['quantity'],
+             'sub_total' => $details['sub_total'],
+             'unit' => $details['unit_id'],
+             'payment_id' =>$payment['id'],
+             'sell_type' =>$payment['sell_type'],
+             'tax' =>$details['gst'],
+             'branch_id'=>Auth::user()->branch_id,
+             ]);
+         }
 
                 foreach(session('cart') as $details)
                 {
@@ -466,7 +551,29 @@ public function updateSessionOrder(Request $request)
 
                   $sold=$p->stock_sold;
                   $left=$p->stock;
-                  if($details['sell_by'] == 'piece')
+
+                  if($details['sell_by']=='fruit')
+                  { 
+                    $stock_kg='';
+                     if(empty($p->stock_sold_kg))
+                     {
+                       $p->stock_sold =$sold+ $this->fruitquentity($details['quantity'])+1;
+                       $p->stock =$left - $this->fruitquentity($details['quantity'])+1;
+                       $p->stock_sold_kg += $this->fruitquentity2($details['quantity']);
+                       $p->save();
+
+                     }else{
+
+                        $stock_kg=$p->stock_sold_kg + $details['quantity'];
+
+                        $p->stock_sold =$sold+$this->fruitquentity($stock_kg);
+                       $p->stock =$left - $this->fruitquentity($stock_kg);
+                       $p->stock_sold_kg = $this->fruitquentity2($stock_kg);
+                       $p->save();
+                     }
+                      
+                      
+                  }elseif($details['sell_by'] == 'piece')
                   {
                     $p->stock_sold=$sold + $details['quantity'];
                     $p->stock=$left - $details['quantity'];
@@ -549,76 +656,7 @@ public function updateSessionOrder(Request $request)
                        
                       //kg if endd
 
-                    // }else if($details['unit_id']==2)//length started
-                    // {
-
-                      //   $quentity=$details['quantity'] ;
-                      //   $soldfit=$p->stock_sold_kg;
-
-                      //   if($quentity >= $details['pack_quentity'])
-                      // {
-
-                      //   // if(empty($gram))
-                      //   //  {
-                      //      if(empty($kg))
-                      //      { 
-                      //         $p->stock_sold_kg= $this->quentityFit($quentity,$details['pack_quentity']);
-                      //         $p->stock_sold_gram=null;
-                      //         $p->stock_sold=$sold + $this->fit($quentity,$details['pack_quentity']);
-                      //         $p->stock=$left - $this->fit($quentity,$details['pack_quentity']);
-                      //         $p->save();
-                          
-                      //      }else
-                      //      {  
-                      //         //if kg for fit is not empty
-                      //          $soldfit2= $soldfit + $quentity;
-                      //          $p->stock_sold_kg=$this->quentityFit($soldfit2,$details['pack_quentity']);
-                      //          $p->stock_sold_gram=null;
-                      //          $p->stock_sold=$sold + $this->fit($soldfit2,$details['pack_quentity']);
-                      //          $p->stock=$left - $this->fit($soldfit2,$details['pack_quentity']);
-                      //          $p->save();
-                              
-
-
-                      //      }//gk if ended
-
-                          
-
-                      // }else{//if q is less than 13
-                             
-                      //        if(empty($kg))
-                      //        {
-                               
-                      //          $p->stock_sold_kg= $quentity;
-                      //          $p->stock_sold_gram=null;
-                      //          $p->stock_sold=$sold + 1;
-                      //          $p->stock=$left - 1;
-                      //          $p->save();
-
-                      //         }else
-                      //         {
-                      //           //if kg for fit is not empty
-                      //           $soldfit2= $soldfit + $quentity;
-                              
-                      //         if($soldfit2 >  $details['pack_quentity'])
-                      //         {
-                      //           $p->stock_sold_kg=$this->quentityFit($soldfit2,$details['pack_quentity']);
-                      //           $p->stock_sold_gram=null;
-                      //           $p->stock_sold=$sold + $this->fit($soldfit2,$details['pack_quentity']);
-                      //           $p->stock=$left - $this->fit($soldfit2,$details['pack_quentity']);
-                      //           $p->save();
-                      //         }else
-                      //         {
-                      //           $p->stock_sold_kg=$soldfit2 ;
-                      //           $p->save();
-                      //         }
-
-                      //     }
-                      // }
-                        
-                    // }else{
-                    //  echo "sorry ....";
-                    //}//unit id 3 if end
+                   
                     
                     
 

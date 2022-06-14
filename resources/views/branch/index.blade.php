@@ -18,7 +18,7 @@ font-weight: 700;
   <div class="card-body">
    <div class="row">
 	<div class="col-4 col-md-4">
-       <h4 class="font-weight-bold">All Invoices</h4>
+       <h4 class="font-weight-bold">Branch Name</h4>
        		
 	</div>
 	<!-- <div class="col-8 col-md-8">

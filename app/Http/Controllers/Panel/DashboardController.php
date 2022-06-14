@@ -19,20 +19,20 @@ class DashboardController extends Controller {
         
         $data = Dashboard::initAdmin();
 
-          foreach (Auth::user()->getRoleNames() as $role) {
+          // foreach (Auth::user()->getRoleNames() as $role) {
             
-                if ($role=='admin' ) {
+          //       if ($role=='admin' ) {
 
-                    $stock=ProductStock::where('stock','=',0)->get();
-                    foreach($stock as $st)
-                    {
-                        Notification::route('mail' , Auth::user()->email)
-                           ->notify(new NewPostNotify());
-                    }
+          //           $stock=ProductStock::where('stock','=',0)->get();
+          //           foreach($stock as $st)
+          //           {
+          //               Notification::route('mail' , Auth::user()->email)
+          //                  ->notify(new NewPostNotify());
+          //           }
                    
                     
-                }
-            }
+          //       }
+          //   }
            
         return view('panel.dashboard.index', compact('data'));
 

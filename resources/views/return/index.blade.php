@@ -81,7 +81,7 @@ font-weight: 700;
 				
 				 
 				@else
-				<x-alert.resource-empty resource="products" new="products.create-bulk"></x-alert.resource-empty>
+				<x-alert.resource-empty resource="Invoice" new="invoice.data"></x-alert.resource-empty>
 				@endif			
 			</div>
 		</form>

@@ -35,7 +35,8 @@ $(document).ready(function(e)
                  $.each(data,function(key,item){
                   $('.invoice_id').text(item.payment_id)
                   let sub=item.sub_total;
-               sub_total=Number.parseFloat(sub).toFixed(3)
+                  
+               sub_total=Number.parseFloat(item.sub_total).toFixed(3)
                  let apend2=`
                   <tr  class="border-bottom printer-tr" style="display: flex;flex-direction:row; width:100%;">
                    
@@ -56,6 +57,7 @@ $(document).ready(function(e)
                   window.print();
                  
                   $('#payment-modal').modal('hide');
+                  $('#pos-table1').empty()
                   $('#pos-table').empty()
                  
                  $('.g_total2').text('')

@@ -164,6 +164,7 @@ return [
         Milon\Barcode\BarcodeServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Illuminate\Notifications\NotificationServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -239,6 +240,7 @@ return [
         'TestHelper' => App\Helpers\TestHelper::class,
         'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
         'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];

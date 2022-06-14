@@ -88,31 +88,39 @@
 								<x-forms.input name="sell_by" value="{{ $product->sell_by }}"></x-forms.input>
 							</div>
 						</div>
-						<div class="col-12 col-md-4">
-							<div class="form-group">
-								<label for="">
-									Unit
-								</label>
-							
-								<select name="unit_id" id="unit_id" class="form-control">
-									
-									@foreach($units as $unit)
-									<option value="{{ $unit->id }}" @if($unit['id'] == $product->unit_id) selected @endif>{{ $unit->unit_name }}</option>
-									@endforeach
-								</select>
-							</div>
-						</div>
 						
 						<div class="col-12 col-md-4">
 							<div class="form-group">
 								<label for="">
-									Weight
+									Stock
 								</label>
-								<x-forms.input name="product_weight" value="{{ $product->product_weight }}"></x-forms.input>
+								<x-forms.input name="stock" value="{{ $stock->stock }}"></x-forms.input>
 							</div>
 						</div>
+						<div class="col-12 col-md-4">
+							<div class="form-group">
+								<label for="">
+									Purchasing Price
+								</label>
+								<x-forms.input name="purchasing_price" value="{{ $stock->purchasing_price }}"></x-forms.input>
+							</div>
+						</div>
+						 @if($product['sell_by']=='fruit')
+					    
+					    <div class="col-12 col-md-4">
+							<div class="form-group">
+								<label for="">
+									Product Price Pack
+								</label>
+								<x-forms.input name="product_price_piece" value="{{ $stock->product_price_piece }}"></x-forms.input>
+							</div>
+						</div>
+					    @endif
+						
+					
 					</div>
 					<div class="row">
+					   
 						@if($product['sell_by']=='piece' || $product['sell_by']=='piece, unit' || $product['sell_by']=='piece,unit'  )
 					  <div class="col-12 col-md-6">
 							<div class="form-group">
@@ -132,7 +140,7 @@
 							</div>
 						</div>
 						@endif
-						@if($product['sell_by']=='unit' || $product['sell_by']=='piece,unit' || $product['sell_by']=='piece, unit'  )
+						@if($product['sell_by']=='unit' || $product['sell_by']=='piece,unit' || $product['sell_by']=='piece, unit' )
 					  <div class="col-12 col-md-6">
 							<div class="form-group">
 								<label for="">
@@ -167,6 +175,7 @@
 							</div>
 						</div>
 						@endif
+						
 					</div>
 					<div class="row">
 						<div class="col-12">

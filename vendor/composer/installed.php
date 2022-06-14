@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => '6c720f7fdbee789294c898ecccdaf6e8f1a13876',
         'name' => 'pos/system',
         'dev' => true,
     ),
@@ -18,6 +18,15 @@
             'aliases' => array(),
             'reference' => '73e5b88775c64ccc0b84fb60836b30dc9d92ac4a',
             'dev_requirement' => false,
+        ),
+        'barryvdh/laravel-debugbar' => array(
+            'pretty_version' => 'v3.6.7',
+            'version' => '3.6.7.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../barryvdh/laravel-debugbar',
+            'aliases' => array(),
+            'reference' => 'b96f9820aaf1ff9afe945207883149e1c7afb298',
+            'dev_requirement' => true,
         ),
         'brick/math' => array(
             'pretty_version' => '0.9.3',
@@ -475,6 +484,15 @@
             'reference' => 'aa70e813a6ad3d1558fc927863d47309b4c23e69',
             'dev_requirement' => false,
         ),
+        'maximebf/debugbar' => array(
+            'pretty_version' => 'v1.18.0',
+            'version' => '1.18.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../maximebf/debugbar',
+            'aliases' => array(),
+            'reference' => '0d44b75f3b5d6d41ae83b79c7a4bceae7fbc78b6',
+            'dev_requirement' => true,
+        ),
         'milon/barcode' => array(
             'pretty_version' => '9.0.0',
             'version' => '9.0.0.0',
@@ -692,12 +710,12 @@
             'dev_requirement' => true,
         ),
         'pos/system' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => '6c720f7fdbee789294c898ecccdaf6e8f1a13876',
             'dev_requirement' => false,
         ),
         'psr/container' => array(
@@ -1027,6 +1045,15 @@
             'aliases' => array(),
             'reference' => '1955d595c12c111629cc814d3f2a2ff13580508a',
             'dev_requirement' => false,
+        ),
+        'symfony/debug' => array(
+            'pretty_version' => 'v4.4.41',
+            'version' => '4.4.41.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/debug',
+            'aliases' => array(),
+            'reference' => '6637e62480b60817b9a6984154a533e8e64c6bd5',
+            'dev_requirement' => true,
         ),
         'symfony/deprecation-contracts' => array(
             'pretty_version' => 'v3.0.0',

@@ -10,9 +10,10 @@ use App\Models\Charge;
 use App\Models\ProductStock;
 use Auth;
 use App\Repository\PaymentRepository;
+use App\Http\Traits\QuantityConverter;
 class ReturnProductController extends Controller
 {
-
+      use QuantityConverter;
      protected $payment = null;
     
     public function __construct(PaymentRepository $payment)
@@ -35,6 +36,9 @@ class ReturnProductController extends Controller
      return response()->json($orders);
 
     }
+
+
+
     public function edit($id) {
          
          $orders=Order::Branch()->findOrFail($id);
@@ -42,6 +46,8 @@ class ReturnProductController extends Controller
         return view('return.edit', compact('orders'));
 
     }
+
+
 
     function update($id,Request $request)
     {
@@ -56,7 +62,30 @@ class ReturnProductController extends Controller
         ->where('pbrand_id',$product->id)
         ->first();
 
-    
+        if($request->sell_by=='fruit')
+        {
+            if($stock['stock_sold_kg'] > $request->quentity)
+            {
+              $stock->stock_sold_kg=$stock->stock_sold_kg-$request->quentity;
+            }else
+            {
+              $stock->stock_sold=$stock->stock_sold - $this->fruitquentity($request->quentity);
+              $stock->stock=$stock->stock + $this->fruitquentity($request->quentity);
+            
+              $stock->stock_sold_kg=$stock->stock_sold_kg - $this->fruitquentity2($request->quentity);
+            }
+
+            Charge::create([
+             
+             'return_charges'=>$request->return_charges??null,
+              'return_quentity'=>$request->quentity,
+              'order_id'=>$order->id,
+              'branch_id'=>Auth::user()->branch_id,
+            ]);
+
+          $stock->save();
+        }
+
         if($order->quentity===1 || $order->quentity==$request->quentity)
         {
             
@@ -71,7 +100,7 @@ class ReturnProductController extends Controller
               'order_id'=>$order->id,
               'branch_id'=>Auth::user()->branch_id,
             ]);
-            // Payment::destroy($id);
+             
             return redirect()->route('return.index')->with('success','Product returned Successfully');
         }else
         {

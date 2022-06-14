@@ -12,7 +12,7 @@ $(document).ready(function(){
         let unit_id=$(this).parents('td').parents('tr').find('.unt').val();
         let sub=$(this).parents('td').siblings('.price').find('input').val();
         let total,value;
-
+    
       let v=$input
           
         if(v < 1)
@@ -24,7 +24,7 @@ $(document).ready(function(){
         {
 
           value=v  * (sub * 10) / 10; 
-          total=value.toFixed(2)
+          total=value.toFixed(3)
         }
        
    

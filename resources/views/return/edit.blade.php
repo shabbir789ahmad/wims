@@ -11,6 +11,7 @@
 				  <div class="row">
 				  	<input type="hidden" name="product_id" value="{{$orders['product_id']}}">
 				  	<input type="hidden" name="order_id" value="{{$orders['id']}}">
+				  	<input type="hidden" name="sell_by" value="{{$orders['sell']}}">
 						<div class="col-12 col-md-6">
 							<div class="form-group">
 								<label for="">
@@ -48,7 +49,7 @@
 								<label for="">
 									Quentity
 								</label>
-								<x-forms.input name="quentity" value="{{$orders['quentity']}}" ></x-forms.input>
+								<x-forms.input name="quentity" value="{{$orders['quentity']}}"   ></x-forms.input>
 							</div>
 						</div>
 						<div class="col-12 col-md-6">

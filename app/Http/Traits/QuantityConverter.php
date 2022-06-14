@@ -17,11 +17,7 @@ trait QuantityConverter
     }
 
 
-    // function quentityKg($quantity)
-    // {
-    //   $count=$quantity/1000;
-    //   return floor($count);
-    // }
+    
 
 
     function quentityKg($quantity,$pack_quentity)
@@ -55,6 +51,24 @@ trait QuantityConverter
     {
       $count=$quantity/$pack_quentity;
       return floor($count);
+    }
+
+
+    function fruitquentity($quantity)
+    {
+      $count=$quantity/1000;
+      return floor($count);
+    }
+
+    function fruitquentity2($quantity)
+    { 
+      $count=$quantity/1000;
+      for($i=0; $i<floor($count); $i++)
+      {
+        $quantity=$quantity - 1000;
+      }
+       $v=$quantity;
+      return abs($v);
     }
  }
 

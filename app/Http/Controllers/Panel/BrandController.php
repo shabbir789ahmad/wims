@@ -6,29 +6,33 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Traits\ImageTrait;
+use App\Http\Traits\ProductTrait;
 use App\Models\Brand;
 use Auth;
-
+use Cache;
 class BrandController extends Controller {
    
    use ImageTrait;
+   use ProductTrait;
     
-    public function index() {
+    public function index() 
+    {
 
-        $brands = \TestHelper::getEloquent(New Brand);
-
-        
-        return view('panel.brands.index', compact('brands'));
+      $brands = $this->brand();
+ 
+      return view('panel.brands.index', compact('brands'));
 
     }
 
-    public function create() {
+    public function create()
+    {
         
         return view('panel.brands.create');
 
     }
 
-    public function store(Request $request) {
+    public function store(Request $request) 
+    {
         
         $validator = \Validator::make($request->all(), [
 

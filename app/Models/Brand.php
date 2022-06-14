@@ -24,4 +24,9 @@ class Brand extends Model {
         
     }
 
+    public static function brands()
+    {
+      return Brand::Branch()->get();
+    }
+
 }

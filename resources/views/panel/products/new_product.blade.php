@@ -81,6 +81,7 @@
  <div class="row">
   <div class="col">
    @if($products)
+ 
    @foreach($products as $product)
    <div class="card mt-5">
 	 <div class="card-body">
@@ -132,7 +133,7 @@
 		 </div>
 		
 		<div class="row">
-			<div class="col-12 col-md-3 @if($product['sell_by']=='piece' || $product['sell_by'] == 'piece,unit' || $product['sell_by'] == 'piece, unit') d-block @else d-none @endif">
+			<div class="col-12 col-md-3 @if($product['sell_by']=='piece' || $product['sell_by'] == 'piece,unit' || $product['sell_by'] == 'piece, unit' || $product['sell_by']=='fruit') d-block @else d-none @endif">
 				<div class="form-group">
 					<label for="">
 						Product Price Pack <span class="text-danger">*</span>
@@ -144,7 +145,7 @@
 					@endif
 				</div>
 			</div>
-     <div class="col-12 col-md-3 @if($product['sell_by']=='piece' || $product['sell_by'] == 'piece,unit' || $product['sell_by'] == 'piece, unit') d-block @else d-none @endif">
+     <div class="col-12 col-md-3 @if($product['sell_by']=='piece' || $product['sell_by'] == 'piece,unit' || $product['sell_by'] == 'piece, unit' || $product['sell_by']=='fruit') d-block @else d-none @endif">
 				<div class="form-group">
 					<label for="">
 						Product Price Pack Wholesale <span class="text-danger">*</span>

@@ -9,7 +9,7 @@ use App\Models\SubCategory;
 use App\Models\ProductBrand;
 use App\Models\Brand;
 use Auth;
-
+use Cache;
 trait ProductTrait
  {
    
@@ -17,18 +17,34 @@ trait ProductTrait
 
     public function category()
     {
-        $categories = Category::Branch()->select('category_name','branch_id','id')->get();
-        return $categories;
+
+       return $categories= Cache::remember('categories', 15, function() 
+        {
+
+           return Category::Branch()->select('category_name','branch_id','id')->get();
+
+        });
+        
+   
     }
+
     public function scategory()
     {
         $sub_categories = SubCategory::Branch()->select('sub_category_name','id','branch_id')->get();
         return $sub_categories;
     }
+
+
     public function brand()
     {
-        $brand = Brand::Branch()->select('brand_name','id','branch_id')->get();
-        return $brand;
+       return $brand= Cache::remember('brand', 15, function() 
+        {
+              
+           return  Brand::Branch()->select('brand_name','id','branch_id')->get();
+
+        });
+   
+      
     }
 
 

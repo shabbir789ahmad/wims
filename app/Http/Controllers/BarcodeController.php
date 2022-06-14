@@ -79,7 +79,7 @@ class BarcodeController extends Controller
     public function show($id)
     {
         $barcode=Barcode::where('id',$id)->first();
-        // dd($barcode);
+       
         return view('barcode.create',compact('barcode'));
     }
 

@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Auth;
 use App\Models\Category;
-
+use App\Http\Traits\ProductTrait;
 class CategoryController extends Controller {
 
+  use ProductTrait;
     public function index() {
 
-        $categories = \TestHelper::getEloquent(New Category);//from testHalper
+        $categories = $this->category();
  
         return view('panel.categories.index', compact('categories'));
 

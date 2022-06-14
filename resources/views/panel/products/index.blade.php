@@ -37,106 +37,85 @@
     <x-same-code2  :brands="$brands"/>
   </div>
 </div>
-<div class="row">
-	<div class="col-12">
-		<div class="card">
-			
-			<div class="card-body pb-0">
-				@if(count($products) > 0)
 
-				<table id="example" class="table table-striped table-bordered" style="width:100%">
+ <div class="row">
+  <div class="col-12">
+   <div class="card">
+	<div class="card-body pb-0">
+	 
+	 @if(count($products) > 0)
+      <table id="example" class="table table-striped table-bordered" style="width:100%">
         <thead>
-            <tr>
-                <th scope="col">Image</th>
-								<th scope="col">Brand</th>
-								<th scope="col">Name </th>
-								<th scope="col">Category</th>
-								<th scope="col">Sub Category</th>
-								<th scope="col">Stock</th>
-								<th scope="col">Sold</th>
-								<th scope="col"></th>
-            </tr>
+          <tr>
+
+           <th scope="col">Image</th>
+		   <th scope="col">Brand</th>
+		   <th scope="col">Name </th>
+		   <th scope="col">Category</th>
+		   <th scope="col">Sub Category</th>
+		   <th scope="col">Stock</th>
+		   <th scope="col">Sold</th>
+		   <th scope="col"></th>
+          </tr>
         </thead>
         <tbody>
-        	
-        	@foreach($products as $product)
+        @foreach($products as $product)
+      
+          <tr>
+			<td class="p-0 col-1">
+			  <img src="{{ asset('uploads/products/' . $product['product_image']) }}"  alt="product image" class="border border-danger" width="80px" height="70px"  loading="lazy">
+			</td>					
+			
+			<td >
+				@foreach($brands as $brand)
+				@foreach($product['brands'] as $b)
+				@if($b['brand_id'] ==  $brand['id'] )
+			{{$brand['brand_name']}}
+				@endif
+									
+				@endforeach
+				@endforeach
+			</td>
 
-        	
-            <tr>
-								
-								<td class="p-0 col-1">
-									<img src="{{ asset('uploads/products/' . $product->product_image) }}"  alt="product image" class="border border-danger" width="80px" height="70px"  loading="lazy">
-								</td>
-								<td >
-									<select class="form-control brands">
-										@foreach($brands as $brand)
-									  	@foreach($product->brand as $b)
-										@if($b->brand_id ==  $brand['id'] )
-										<option value="{{$b['id']}}">{{$brand['brand_name']}}</option>
-										@endif
-									
-									  @endforeach
-									  @endforeach
-									</select>
-								</td>
-								<td >
-									
-										{{ $product->product_name }}
-									
-								</td>
-									
-							
-								<td>
-									{{ $product->category_name }}
-								</td>
-								<td>
-									{{ $product->sub_category_name }}
-								</td>
-								<td>
-									<select class="form-control">
-										@foreach($stocks as $stock)
-									@foreach($product->brand as $b)
-									@if($stock['pbrand_id'] == $b['id'])
-                   <option>{{$stock['stock']}}</option>
-                  @endif
-									@endforeach
-									@endforeach
-										
-									</select>
-									
-								</td>
-								<td>
-									<select class="form-control">
-										@foreach($stocks as $stock)
-									@foreach($product->brand as $b)
-									@if($stock['pbrand_id'] == $b['id'])
-									@if($stock['stock_sold']==Null || $stock['stock_sold']=='')
-                   <option>0</option>
-									@else
-                   <option>{{$stock['stock_sold']}}</option>
-                  @endif
-                  @endif
-									@endforeach
-									@endforeach
-										
-									</select>
-								</td>
-								<td class="col-1">
+			<td >{{ $product['product_name'] }}</td>
+
+			<td>
+				@foreach($categories as $category)
+				@if($category['id']==$product['category_id'])
+				 {{ $category->category_name }}
+				 @endif
+				 @endforeach
+			</td>
+			<td>
+				@foreach($sub_categories as $category)
+				@if($category['id']==$product['sub_category_id'])
+				 {{ $category->sub_category_name }}
+			    @endif
+				@endforeach
+			</td>
+           @foreach($product['brands'] as $b)		
+				@foreach($b['stocks'] as $s)
+			<td>{{$s['stock']}}</td>
+			<td>{{$s['stock_sold']}}</td>
+                @endforeach
+                @endforeach
+
+           <td class="col-1">
 									<div class="d-flex">
-								  <a href="{{ route('products.edit', ['id' => $product->id]) }}" type="submit" class="btn btn-xs btn-info">
+								  <a href="{{ route('products.edit', ['id' => $product['id']]) }}" type="submit" class="btn btn-xs btn-info">
 										Edit
 									</a>
-									<a href="{{ route('product.barcode', ['id' => $product->id]) }}" type="submit" class="btn btn-xs btn-info ml-1">
+									<a href="{{ route('product.barcode', ['id' => $product['id']]) }}" type="submit" class="btn btn-xs btn-info ml-1">
 										 Barcode
 									</a>
 								</div>
 									<div class="d-flex">
-									<form  action="{{ route('products.stock',['id' => $product->id])}}" method="GET" class="stock_form " >
+									<form  action="{{ route('products.stock',['id' => $product['id']])}}" method="GET" class="stock_form " >
 										@csrf
 										<input type="hidden" name="brandss" class="brnd">
 								   <button class="btn btn-info btn-xs stc" >Stock</button>
 								  </form>
-									<form action="{{ route('products.destroy', ['id' => $product->id]) }}" method="POST" class="ml-1" onsubmit="return confirmDelete()">
+									<form action="{{ route('products.destroy', ['id' => $product['id']]) }}" method="POST" class="ml-1" onsubmit="return confirmDelete()">
 										@method('DELETE')
 										@csrf
 										<button type="submit" class="btn btn-xs btn-danger">
@@ -145,25 +124,25 @@
 								
 									</form>
 								</div>
-								</td>
-							</tr>
-      
-            @endforeach
-        </tbody>
-    </table>
-    <div class="d-flex justify-content-center mt-3">
-    {!! $products->links() !!}
-</div>
+								</td>     
 				
-				 
-				@else
-				<x-alert.resource-empty resource="products" new="products.create-bulk"></x-alert.resource-empty>
-				@endif			
-			</div>
-		</form>
-		</div>
-	</div>
-</div>
+		  </tr>
+      
+        @endforeach
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-center mt-3">
+       
+      </div>
+	 @else
+	 
+	  <x-alert.resource-empty resource="products" new="products.create-bulk"></x-alert.resource-empty>
+	 @endif			
+    </div>
+ <!--  </form> -->
+   </div>
+  </div>
+ </div>
 
 
 

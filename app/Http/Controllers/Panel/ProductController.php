@@ -30,16 +30,31 @@ class ProductController extends Controller {
     public function index(Request $req) {
        
   
-        $products= Product::getProducts(); //from product trait
+       // $products= Product::getProducts(); //from product trait
  
         $categories= $this->category();
         $sub_categories= $this->scategory();
         $brands= $this->brand();
         
-        $stocks=$this->stock->getAllStock();
+        //$stocks=$this->stock->getAllStock();
        
-        //dd($stocks);
-        return view('panel.products.index', compact('products','categories','brands','sub_categories','stocks'));
+        $query= Product::Branch()->with('brands','brands.stocks')->select('product_name','product_image','category_id','sub_category_id','id')->when(request('brand_se'),function($q){
+
+            
+        });
+         
+         if($req->sub_category )
+          {
+              
+            $query=$query->where('sub_category_id',$req->sub_category); 
+              
+           }
+   
+        $products=$query->get();
+
+        $products=json_decode(json_encode($products),true);
+      // dd($products);
+        return view('panel.products.index', compact('products','categories','brands','sub_categories'));
 
     }
 
@@ -185,6 +200,7 @@ class ProductController extends Controller {
             $request->request->add(['product_image' => $file]);
 
         }
+      
      
      foreach($request->sell_by as $sel)
      {
@@ -198,11 +214,23 @@ class ProductController extends Controller {
             $unit = 1;
             $price = $request->price_per_piece;
 
+        }elseif($sel == 'fruit') {
+
+            $unit = 1;
+            $price = $request->price_per_piece;
+
         }
      }
         
 
-    
+    $selling_price_piece='';
+    if($request->product_price_piece)
+    {
+         $selling_price_piece=$request->product_price_piece;
+    }elseif($request->selling_price)
+    {
+      $selling_price_piece=$request->selling_price;
+    }
 
         $sell=implode(", ", $request->sell_by);
         $product =
@@ -222,7 +250,7 @@ class ProductController extends Controller {
             ];
 
 
-        DB::transaction(function() use($request,$product)
+        DB::transaction(function() use($request,$product,$selling_price_piece)
         {
            $data=Product::create($product);
            $brand= ProductBrand::create([
@@ -236,7 +264,7 @@ class ProductController extends Controller {
             
                 'stock' =>$request->stock,
                 'pbrand_id'  =>$brand['id'],
-                'product_price_piece' => $request->product_price_piece,
+                'product_price_piece' => $selling_price_piece,
                 'product_price_unit' => $request->product_price_unit,
                 'product_price_piece_wholesale' => $request->product_price_piece_wholesale,
                 'product_price_unit_wholesale' => $request->product_price_unit_wholesale,
@@ -425,7 +453,9 @@ class ProductController extends Controller {
           'purchasing_price' => 'required'
 
         ]);
-   
+     
+
+
     try {
 
          \DB::beginTransaction();
@@ -516,7 +546,7 @@ class ProductController extends Controller {
 
         }
          
-
+ 
 
         try{
              
@@ -525,7 +555,7 @@ class ProductController extends Controller {
             'sub_category_id'=>$request->sub_category_id,
             'product_name'=>$request->product_name,
             'product_weight'=>$request->product_weight,
-            'unit_id'=>$request->unit_id,
+            
             'gst_tax'=>$request->gst_tax,
             'product_code'=>$request->product_code,
             'unit_barcode'=>$request->unit_barcode??null,
@@ -539,10 +569,12 @@ class ProductController extends Controller {
         $brand->save();
 
         ProductStock::where('pbrand_id',$request->bid)->update([
-       'product_price_piece'=>$request->product_price_piece??null,
-       'product_price_piece_wholesale'=>$request->product_price_piece_wholesale??null,
-       'product_price_unit'=>$request->product_price_unit??null,
-       'product_price_unit_wholesale'=>$request->product_price_unit_wholesale??null,
+       'product_price_piece'=>$request->product_price_piece,
+       'product_price_piece_wholesale'=>$request->product_price_piece_wholesale,
+       'product_price_unit'=>$request->product_price_unit,
+       'product_price_unit_wholesale'=>$request->product_price_unit_wholesale,
+       'stock'=>$request->stock,
+       'purchasing_price'=>$request->purchasing_price,
 
         ]);
         
@@ -550,7 +582,7 @@ class ProductController extends Controller {
         
         }catch(\exception $e){
         
-         return redirect()->back()->with('flash','error');
+        return redirect()->back()->with('flash','error');
          
         }
 
